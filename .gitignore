@@ -358,7 +358,3 @@ MigrationBackup/
 
 # AWS Lambda
 .lambda-test-tool/
-/Authenticate/aws-lambda-tools-defaults.json
-/QueryJob/aws-lambda-tools-defaults.json
-/QueryReleaseKey/aws-lambda-tools-defaults.json
-/UiPathRunJob/aws-lambda-tools-defaults.json

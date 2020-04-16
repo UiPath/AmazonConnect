@@ -1,0 +1,12 @@
+{
+  "profile": "default",
+  "region": "us-east-2",
+  "configuration": "Release",
+  "framework": "netcoreapp2.1",
+  "function-runtime": "dotnetcore3.1",
+  "function-memory-size": 256,
+  "function-timeout": 30,
+  "function-handler"     : "QueryReleaseKey::QueryReleaseKey.Function::FunctionHandler",
+  "function-name"        : "UiPathOrchestratorQueryReleaseKey",
+  "environment-variables" : "\"PlatformURL\"=\"https://platform.uipath.com\""
+}
