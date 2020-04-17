@@ -37,7 +37,7 @@ jobs:
       with:
         dotnet-version: 3.1.101
     - name: Install dependencies
-      run: dotnet restore
+      run: dotnet restore src
     - name: Build
       run: dotnet build src/StartJob/StartJob.csproj --configuration Release --no-restore
     - name: Publish
@@ -58,7 +58,7 @@ jobs:
       with:
         dotnet-version: 3.1.101
     - name: Install dependencies
-      run: dotnet restore
+      run: dotnet restore src
     - name: Build
       run: dotnet build src/QueryJob/QueryJob.csproj --configuration Release --no-restore
     - name: Publish
@@ -79,7 +79,7 @@ jobs:
       with:
         dotnet-version: 3.1.101
     - name: Install dependencies
-      run: dotnet restore
+      run: dotnet restore src
     - name: Build
       run: dotnet build src/QueryReleaseKey/QueryReleaseKey.csproj --configuration Release --no-restore
     - name: Publish
