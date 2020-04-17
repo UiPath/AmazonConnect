@@ -1,0 +1,93 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build-Authenticate:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.101
+    - name: Install dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build Authenticate/Authenticate.csproj --configuration Release --no-restore
+    - name: Publish
+      run: dotnet publish Authenticate/Authenticate.csproj --configuration Release --output ${{ github.workspace }}/bin/Authenticate
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        # Artifact name
+        name: UiPathAuthenticate
+        # Directory containing files to upload
+        path: ${{ github.workspace }}/bin/Authenticate
+  build-StartJob:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.101
+    - name: Install dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build StartJob/StartJob.csproj --configuration Release --no-restore
+    - name: Publish
+      run: dotnet publish StartJob/StartJob.csproj --configuration Release --output ${{ github.workspace }}/bin/StartJob
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        # Artifact name
+        name: UiPathStartJob
+        # Directory containing files to upload
+        path: ${{ github.workspace }}/bin/StartJob
+  build-QueryJob:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.101
+    - name: Install dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build QueryJob/QueryJob.csproj --configuration Release --no-restore
+    - name: Publish
+      run: dotnet publish QueryJob/QueryJob.csproj --configuration Release --output ${{ github.workspace }}/bin/QueryJob
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        # Artifact name
+        name: UiPathQueryJob
+        # Directory containing files to upload
+        path: ${{ github.workspace }}/bin/QueryJob
+  build-QueryReleaseKey:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.101
+    - name: Install dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build QueryReleaseKey/QueryReleaseKey.csproj --configuration Release --no-restore
+    - name: Publish
+      run: dotnet publish QueryReleaseKey/QueryReleaseKey.csproj --configuration Release --output ${{ github.workspace }}/bin/QueryReleaseKey
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        # Artifact name
+        name: UiPathQueryReleaseKey
+        # Directory containing files to upload
+        path: ${{ github.workspace }}/bin/QueryReleaseKey
