@@ -18,9 +18,9 @@ jobs:
     - name: Install dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build Authenticate/Authenticate.csproj --configuration Release --no-restore
+      run: dotnet build src/Authenticate/Authenticate.csproj --configuration Release --no-restore
     - name: Publish
-      run: dotnet publish Authenticate/Authenticate.csproj --configuration Release --output ${{ github.workspace }}/bin/Authenticate
+      run: dotnet publish src/Authenticate/Authenticate.csproj --configuration Release --output ${{ github.workspace }}/bin/Authenticate
     - name: Upload artifacts
       uses: actions/upload-artifact@v1.0.0
       with:
@@ -39,9 +39,9 @@ jobs:
     - name: Install dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build StartJob/StartJob.csproj --configuration Release --no-restore
+      run: dotnet build src/StartJob/StartJob.csproj --configuration Release --no-restore
     - name: Publish
-      run: dotnet publish StartJob/StartJob.csproj --configuration Release --output ${{ github.workspace }}/bin/StartJob
+      run: dotnet publish src/StartJob/StartJob.csproj --configuration Release --output ${{ github.workspace }}/bin/StartJob
     - name: Upload artifacts
       uses: actions/upload-artifact@v1.0.0
       with:
@@ -60,9 +60,9 @@ jobs:
     - name: Install dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build QueryJob/QueryJob.csproj --configuration Release --no-restore
+      run: dotnet build src/QueryJob/QueryJob.csproj --configuration Release --no-restore
     - name: Publish
-      run: dotnet publish QueryJob/QueryJob.csproj --configuration Release --output ${{ github.workspace }}/bin/QueryJob
+      run: dotnet publish src/QueryJob/QueryJob.csproj --configuration Release --output ${{ github.workspace }}/bin/QueryJob
     - name: Upload artifacts
       uses: actions/upload-artifact@v1.0.0
       with:
@@ -81,9 +81,9 @@ jobs:
     - name: Install dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build QueryReleaseKey/QueryReleaseKey.csproj --configuration Release --no-restore
+      run: dotnet build src/QueryReleaseKey/QueryReleaseKey.csproj --configuration Release --no-restore
     - name: Publish
-      run: dotnet publish QueryReleaseKey/QueryReleaseKey.csproj --configuration Release --output ${{ github.workspace }}/bin/QueryReleaseKey
+      run: dotnet publish src/QueryReleaseKey/QueryReleaseKey.csproj --configuration Release --output ${{ github.workspace }}/bin/QueryReleaseKey
     - name: Upload artifacts
       uses: actions/upload-artifact@v1.0.0
       with:
