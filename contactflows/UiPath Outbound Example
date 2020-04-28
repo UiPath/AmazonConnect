@@ -429,7 +429,7 @@
     },
     "snapToGrid": false,
     "name": "UiPath Outbound Example",
-    "description": null,
+    "description": "Leverages UiPath unattended automation to make an update to back-end systems.",
     "type": "contactFlow",
     "status": "saved",
     "hash": "70e0a029e83bf9c153b03144207737d8d729a73e1e0e5947f410219f43f81173"

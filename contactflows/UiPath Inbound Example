@@ -496,8 +496,8 @@
       "y": 15
     },
     "snapToGrid": false,
-    "name": "Get bill using RPA",
-    "description": "Invokes a lambda function to determine information about the user.",
+    "name": "UiPath Inbound Example",
+    "description": "Leverages UiPath unattended automation to query information about the user from back-end systems.",
     "type": "contactFlow",
     "status": "published",
     "hash": "fefa923d1ddc97609492c66d61d9231ee7ef8843c3cedef061cdff011d290a97"
