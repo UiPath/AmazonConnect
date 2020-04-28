@@ -356,5 +356,7 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 
-# AWS Lambda
+# Amazon Connect
 .lambda-test-tool/
+.local/
+.settings/
