@@ -60,7 +60,7 @@ And three helper lambda functions:
 
 1. Open the [AWS Lambda console](https://console.aws.amazon.com/lambda/home)
 2. Set the region to the same region as your Amazon Connect instance.  *NOTE: Amazon Connect only supports using lambda functions in the same region as your contact center.*
-3. Download the UiPath AWS Lambda function deplyoment packages [from the release tab on this repo](/releases), or edit the [source code](./functions) and build your own using the documentation on [building Lambda Functions with C#](https://docs.aws.amazon.com/lambda/latest/dg/lambda-csharp.html)
+3. Download the UiPath AWS Lambda function deplyoment packages from the release tab on this repo, or edit the [source code](./functions) and build your own using the documentation on [building Lambda Functions with C#](https://docs.aws.amazon.com/lambda/latest/dg/lambda-csharp.html)
 4. [Create 5 new AWS Lambda functions](https://docs.aws.amazon.com/lambda/latest/dg/getting-started-create-function.html) and upload the related code package you downloaded above:
 
 | Function name                     | Runtime       | Package                   | Handler                                                    |
