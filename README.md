@@ -121,32 +121,42 @@ And three helper lambda functions:
 
 **NOTE: If the contact flow fails, try again.  The cold start generally takes longer than the Amazon Connect lambda allows but once the system is in a warm state, the performance improves significantly**
 
-#### Obtaining the organization Unit Id
-We are working to make this easier.  In the meantime, here's a quick way to get the Organization Unit Id.
+#### Obtaining the organization unit id
+The Organization Unit Id represents the Orchestrator folder your processes are stored in.  
 1. Open up a browser and sign into your [Cloud Orchestrator instance](http://cloud.uipath.com)
-2. Navigate to https://cloud.uipath.com/ACCOUNT/TENANT/api/FoldersNavigation/GetFoldersPageForCurrentUser?skip=0&take=50 where ACCOUNT is your account name and tenant is your tenant name (see step 2.6 above).  This will return a JSON blob like the following:
+2. Navigate to https://cloud.uipath.com/ACCOUNT/TENANT/odata/Folders where ACCOUNT is your account name and tenant is your tenant name (see step 2.6 above).  This will return a JSON blob like the following:
 
 ```
 {
-  "PageItems": [
+  "@odata.context": "https://cloud.uipath.com/jmarks/jmarks/odata/$metadata#Folders",
+  "@odata.count": 3,
+  "value": [
     {
-      "IsSelectable": true,
-      "HasChildren": false,
-      "Level": 0,
       "DisplayName": "Default",
       "FullyQualifiedName": "Default",
+      "FullyQualifiedNameOrderable": "Default",
       "Description": null,
-      "IsPersonal": false,
       "ProvisionType": "Manual",
       "PermissionModel": "InheritFromTenant",
       "ParentId": null,
+      "IsActive": true,
       "Id": 60193
+    },
+    {
+      "DisplayName": "HR",
+      "FullyQualifiedName": "HR",
+      "FullyQualifiedNameOrderable": "HR",
+      "Description": null,
+      "ProvisionType": "Manual",
+      "PermissionModel": "InheritFromTenant",
+      "ParentId": null,
+      "IsActive": true,
+      "Id": 227316
     }
-  ],
-  "Count": 1
+  ]
 }
 ```
-3. Take the Id field for the folder your processes are in.  The DisplayName is likely 'Default' like in the example above.
+3. Take the Id field for the folder your processes are stored in.  The DisplayName is likely 'Default' like in the example above.
 
 #### Obtaining a release key 
 We have provided a helper Lambda function, UiPathQueryReleaseKey, for converting a process name into the release key GUID.  You can manually run the lambda from the Lambda Console to get the value you need to provide in the contact flow configuration in step 4.5.  Below is an example of the input you need to pass
