@@ -33,7 +33,7 @@ Access Management (IAM) user role that has the necessary permissions.
 
 ### Step 2. Create & configure your UiPath Cloud instance
 1. Create a [new UiPath cloud instance](https://platform.uipath.com/portal_/register), or [use an existing instace](https://cloud.uipath.com)
-2. Download the sample processes [in this repo](./tree/master/processes), or use your own processes
+2. Download the sample processes [in this repo](./master/processes), or use your own processes
  - Inbound Demo
    - BillLookup - an unattended automation that takes a phone number as input and returns the last monthly bill details
  - Outbound Demo
@@ -82,7 +82,7 @@ And three helper lambda functions:
 ### Step 4. Create the contact flows in Amazon Connect
 1. Open the Amazon Connect console at https://console.aws.amazon.com/connect/.
 2. Add the Lambda Functions to Your Amazon Connect Instance by following the [AWS documentation](https://docs.aws.amazon.com/connect/latest/adminguide/connect-lambda-functions.html#add-lambda-function).  Specifically, you need to add UiPathStartJob and UiPathQueryJob.
-3. Download the sample contact flows [in this repo](./tree/master/contactflows)
+3. Download the sample contact flows [in this repo](./master/contactflows)
 4. Import the sample contact flows into Amazon Connect by following the [Amazon Connect documentation](https://docs.aws.amazon.com/connect/latest/adminguide/contact-flow-import-export.html)
 5. Make the following changes to the contact flows to customize them for your own environment
 
