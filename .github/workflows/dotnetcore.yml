@@ -16,11 +16,11 @@ jobs:
       with:
         dotnet-version: 3.1.101
     - name: Install dependencies
-      run: dotnet restore src
+      run: dotnet restore functions
     - name: Build
-      run: dotnet build src/Authenticate/Authenticate.csproj --configuration Release --no-restore
+      run: dotnet build functions/Authenticate/Authenticate.csproj --configuration Release --no-restore
     - name: Publish
-      run: dotnet publish src/Authenticate/Authenticate.csproj --configuration Release --output ${{ github.workspace }}/bin/Authenticate
+      run: dotnet publish functions/Authenticate/Authenticate.csproj --configuration Release --output ${{ github.workspace }}/bin/Authenticate
     - name: Upload artifacts
       uses: actions/upload-artifact@v1.0.0
       with:
@@ -37,11 +37,11 @@ jobs:
       with:
         dotnet-version: 3.1.101
     - name: Install dependencies
-      run: dotnet restore src
+      run: dotnet restore functions
     - name: Build
-      run: dotnet build src/StartJob/StartJob.csproj --configuration Release --no-restore
+      run: dotnet build functions/StartJob/StartJob.csproj --configuration Release --no-restore
     - name: Publish
-      run: dotnet publish src/StartJob/StartJob.csproj --configuration Release --output ${{ github.workspace }}/bin/StartJob
+      run: dotnet publish functions/StartJob/StartJob.csproj --configuration Release --output ${{ github.workspace }}/bin/StartJob
     - name: Upload artifacts
       uses: actions/upload-artifact@v1.0.0
       with:
@@ -58,11 +58,11 @@ jobs:
       with:
         dotnet-version: 3.1.101
     - name: Install dependencies
-      run: dotnet restore src
+      run: dotnet restore functions
     - name: Build
-      run: dotnet build src/QueryJob/QueryJob.csproj --configuration Release --no-restore
+      run: dotnet build functions/QueryJob/QueryJob.csproj --configuration Release --no-restore
     - name: Publish
-      run: dotnet publish src/QueryJob/QueryJob.csproj --configuration Release --output ${{ github.workspace }}/bin/QueryJob
+      run: dotnet publish functions/QueryJob/QueryJob.csproj --configuration Release --output ${{ github.workspace }}/bin/QueryJob
     - name: Upload artifacts
       uses: actions/upload-artifact@v1.0.0
       with:
@@ -79,11 +79,11 @@ jobs:
       with:
         dotnet-version: 3.1.101
     - name: Install dependencies
-      run: dotnet restore src
+      run: dotnet restore functions
     - name: Build
-      run: dotnet build src/QueryReleaseKey/QueryReleaseKey.csproj --configuration Release --no-restore
+      run: dotnet build functions/QueryReleaseKey/QueryReleaseKey.csproj --configuration Release --no-restore
     - name: Publish
-      run: dotnet publish src/QueryReleaseKey/QueryReleaseKey.csproj --configuration Release --output ${{ github.workspace }}/bin/QueryReleaseKey
+      run: dotnet publish functions/QueryReleaseKey/QueryReleaseKey.csproj --configuration Release --output ${{ github.workspace }}/bin/QueryReleaseKey
     - name: Upload artifacts
       uses: actions/upload-artifact@v1.0.0
       with:
