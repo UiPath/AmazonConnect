@@ -1,5 +1,4 @@
 # Amazon Connect powered by UiPath
-## Fulfill Amazon Connect contact flows with unattended UiPath automation
 
 ![Continuous Integration](https://github.com/UiPath/AWSLambda/workflows/Continuous%20Integration/badge.svg)
 
