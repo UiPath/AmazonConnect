@@ -14,7 +14,18 @@ This repro contains everything you need to quickly incorporate UiPath automation
 - Sample Inbound and Outbound Amazon Connect Contact Flows
 - Sample Processes
 
+## Demo description
+We have created two distinct demos to show off different use cases for interacting with Amazon Connect
+
+### Fulfilling IVR requests with UiPath automation [Inbound]
+Aileen is a customer of Meeple Telco and wants to know the current balance for her mobile phone bill.  She makes a voice call to her Meeple Telco customer service number and the IVR flow queries the back-end for her last bill date and total. Aileen is thrilled that she was able to answer her question in under 30 seconds and without having to talk to anyone!
+
+### Outbound Calling [Outbound]
+An attended automation queries an Excel spreadsheet for applicants that are missing data from their applications, namely their social security number.  The automation uses Amazon Connect to call each applicant and when they pick-up the call, are prompted to enter their social security number.  This data is then updated in the Excel spreadsheet.
+
 ## Deployment Steps
+*NOTE: We are working on building a Cloud Formation template to automate this deployment process.  We'll update the repo as soon as it becomes available.  ETA is June 2020.*
+
 ### Step 1. Prepare an Amazon Connect instance
 1. Sign in to your AWS account at https://aws.amazon.com with an AWS Identity and
 Access Management (IAM) user role that has the necessary permissions.
@@ -39,13 +50,13 @@ Access Management (IAM) user role that has the necessary permissions.
 
 ### Step 3. Create lambda functions
 AWS Lambda functions will be the glue that connect Amazon Connect and UiPath.  There are two primary lambda functions:
-   - UiPathOrchestratorStartJob - Queue a UiPath automation job, with inputs
-   - UiPathOrchestratorQueryJob - Check the status of a job
+   - UiPathStartJob - Queue a UiPath automation job, with inputs
+   - UiPathQueryJob - Check the status of a job
 
 And three helper lambda functions:
    - UiPathPackInputs - Package the inputs from Amazon Connect into a JSON packet
-   - UiPathOrchestratorQueryReleaseKey - Get the release key guid for a given process name
-   - UiPathOrchestratorAuthenticate - Get an access token for interacting with the UiPath Cloud Orchestrator
+   - UiPathQueryReleaseKey - Get the release key guid for a given process name
+   - UiPathAuthenticate - Get an access token for interacting with the UiPath Cloud Orchestrator
 
 1. Open the [AWS Lambda console](https://console.aws.amazon.com/lambda/home)
 2. Set the region to the same region as your Amazon Connect instance.  *NOTE: Amazon Connect only supports using lambda functions in the same region as your contact center.*
@@ -54,10 +65,10 @@ And three helper lambda functions:
 
 | Function name                     | Runtime       | Package                   | Handler                                                    |
 |-----------------------------------|---------------|---------------------------|------------------------------------------------------------|
-| UiPathOrchestratorAuthenticate    | .NET Core 3.1 | UiPathAuthenticate.zip    | Authenticate::Authenticate.Function::FunctionHandler       |
-| UiPathOrchestratorQueryReleaseKey | .NET Core 3.1 | UiPathQueryReleaseKey.zip | QueryReleaseKey::QueryReleaseKey.Function::FunctionHandler |
-| UiPathOrchestratorStartJob        | .NET Core 3.1 | UiPathStartJob.zip        | StartJob::StartJob.Function::FunctionHandler               |
-| UiPathOrchestratorQueryJob        | .NET Core 3.1 | UiPathQueryJob.zip        | QueryJob::QueryJob.Function::FunctionHandler               |
+| UiPathAuthenticate    | .NET Core 3.1 | UiPathAuthenticate.zip    | Authenticate::Authenticate.Function::FunctionHandler       |
+| UiPathQueryReleaseKey | .NET Core 3.1 | UiPathQueryReleaseKey.zip | QueryReleaseKey::QueryReleaseKey.Function::FunctionHandler |
+| UiPathStartJob        | .NET Core 3.1 | UiPathStartJob.zip        | StartJob::StartJob.Function::FunctionHandler               |
+| UiPathQueryJob        | .NET Core 3.1 | UiPathQueryJob.zip        | QueryJob::QueryJob.Function::FunctionHandler               |
 | UiPathPackInputs                  | Node.js 12.x  | See code below  | index.handler              |
 
 #### UiPathPackInputs code
@@ -69,24 +80,107 @@ And three helper lambda functions:
 ```    
 
 ### Step 4. Create the contact flows in Amazon Connect
-1. Add the Lambda Functions to Your Amazon Connect Instance by following the [AWS documentation](https://docs.aws.amazon.com/connect/latest/adminguide/connect-lambda-functions.html#add-lambda-function).  Specifically, you need to add UiPathOrchestratorStartJob and UiPathOrchestratorQueryJob.
-2. Download the sample contact flows [in this repo](./tree/master/contactflows)
-3. Import the sample contact flows into Amazon Connect by following the [Amazon Connect documentation](https://docs.aws.amazon.com/connect/latest/adminguide/contact-flow-import-export.html)
-4. Change...
-Change values:
-Account
-Tenant
-Client Key
-USer Key
+1. Open the Amazon Connect console at https://console.aws.amazon.com/connect/.
+2. Add the Lambda Functions to Your Amazon Connect Instance by following the [AWS documentation](https://docs.aws.amazon.com/connect/latest/adminguide/connect-lambda-functions.html#add-lambda-function).  Specifically, you need to add UiPathStartJob and UiPathQueryJob.
+3. Download the sample contact flows [in this repo](./tree/master/contactflows)
+4. Import the sample contact flows into Amazon Connect by following the [Amazon Connect documentation](https://docs.aws.amazon.com/connect/latest/adminguide/contact-flow-import-export.html)
+5. Make the following changes to the contact flows to customize them for your own environment
+
+**Inbound**
+ - Invoke AWS Lambda function #1
+   - Function: UiPathStartJob
+   - Inputs:
+      - accountName - provide the account name from step 2.6 above
+      - tenantName - provide the tenant name from step 2.6 above
+      - clientId - provide the clientId name from step 2.6 above
+      - userKey - provide the UserKey name from step 2.6 above
+      - releaseKey - provide the GUID for the process to run, [see below](#Obtaining-a-release-key)
+      - organizationUnitId - provide the ID for the Orchestrator folder, [see below](#Obtaining-the-organization-Unit-Id)
+
+ - Invoke AWS Lambda function #2
+   - Function: UiPathQueryJob
+      - accountName - provide the account name from step 2.6 above
+      - tenantName - provide the tenant name from step 2.6 above
+      - organizationUnitId - provide the ID for the Orchestrator folder, [see below](#Obtaining-the-organization-Unit-Id)
+
+**Outbound**
+  - Invoke AWS Lambda function #2
+    - Function: UiPathStartJob
+    - Inputs:
+      - accountName - provide the account name from step 2.6 above
+      - tenantName - provide the tenant name from step 2.6 above
+      - clientId - provide the clientId name from step 2.6 above
+      - userKey - provide the UserKey name from step 2.6 above
+      - releaseKey - provide the GUID for the process to run, [see below](#Obtaining-a-release-key)
+      - organizationUnitId - provide the ID for the Orchestrator folder, [see below](#Obtaining-the-organization-Unit-Id)
 
 ### Step 5. Configure & test your flows 
+1. [Associate a phone number with a contact flow](https://docs.aws.amazon.com/connect/latest/adminguide/associate-phone-number.html)
+2. [Follow the guidance to associate the chat test settings with a contact flow](https://docs.aws.amazon.com/connect/latest/adminguide/chat-testing.html)
+3. [Test out the voice or chat experience](https://docs.aws.amazon.com/connect/latest/adminguide/chat-testing.html)
 
+**NOTE: If the contact flow fails, try again.  The cold start generally takes longer than the Amazon Connect lambda allows but once the system is in a warm state, the performance improves significantly**
 
+#### Obtaining the organization Unit Id
+We are working to make this easier.  In the meantime, here's a quick way to get the Organization Unit Id.
+1. Open up a browser and sign into your [Cloud Orchestrator instance](http://cloud.uipath.com)
+2. Navigate to https://cloud.uipath.com/ACCOUNT/TENANT/api/FoldersNavigation/GetFoldersPageForCurrentUser?skip=0&take=50 where ACCOUNT is your account name and tenant is your tenant name (see step 2.6 above).  This will return a JSON blob like the following:
 
+```
+{
+  "PageItems": [
+    {
+      "IsSelectable": true,
+      "HasChildren": false,
+      "Level": 0,
+      "DisplayName": "Default",
+      "FullyQualifiedName": "Default",
+      "Description": null,
+      "IsPersonal": false,
+      "ProvisionType": "Manual",
+      "PermissionModel": "InheritFromTenant",
+      "ParentId": null,
+      "Id": 60193
+    }
+  ],
+  "Count": 1
+}
+```
+3. Take the Id field for the folder your processes are in.  The DisplayName is likely 'Default' like in the example above.
 
-3.	Create contact flow for phone and/or chat
-a.	https://aws.amazon.com/connect/
-b.	Link Lambdas
-c.	Sample Contact Flows
+#### Obtaining a release key 
+We have provided a helper Lambda function, UiPathQueryReleaseKey, for converting a process name into the release key GUID.  You can manually run the lambda from the Lambda Console to get the value you need to provide in the contact flow configuration in step 4.5.  Below is an example of the input you need to pass
+
+##### Format
+```
+{
+  "Details": {
+    "Parameters": {
+      "clientId": "YOUR_CLIENT_ID",
+      "userKey": "YOUR_USER_KEY"
+      "accountName": "YOUR_ACCOUNT_NAME",
+      "tenantName": "YOUR_TENANT_NAME",
+      "organizationUnitId": YOUR_ORGANIZATION_ID,
+      "processName": "PROCESSNAME"
+    }
+  }
+}
+```
+
+##### Example
+
+```{
+  "Details": {
+    "Parameters": {
+      "clientId": "9EEv1ALOPczW3y4ABCDL3jYf62jK21n5",
+      "userKey": "yek-LSGrRk2G8EO_rEKM70i2kPAXt9H_c6Z1bFrweABCe"
+      "accountName": "jmarks",
+      "tenantName": "jmarks",
+      "organizationUnitId": 60193,
+      "processName": "BillLookup"
+    }
+  }
+}
+```
 
 To post feedback, submit feature ideas, or report bugs, use the Issues section of this GitHub repo.
