@@ -133,8 +133,6 @@ For the outbound demo, the OutboundLauncher process uses the command line to mak
     - outboundPhoneNumber: Phone number that you've [claimed in Amazon Connect](https://docs.aws.amazon.com/connect/latest/adminguide/claim-phone-number.html).  Note it must be in the format **+14255551212**
     - instanceId: the instanceId from #2 above.
     - flowId: the flowId from #2 above.
-    
-needs to be updated like your inbound launcher process to parameterize excel file, and instructions to update the command line to match connect instance id, flow instance id and outbound phone number.
 
 #### Obtaining the organization unit id
 The Organization Unit Id represents the Orchestrator folder your processes are stored in.  
