@@ -1,11 +1,10 @@
 # Amazon Connect powered by UiPath
-## Fulfill Amazon Connect contact flows with unattended UiPath automation
 
 ![Continuous Integration](https://github.com/UiPath/AWSLambda/workflows/Continuous%20Integration/badge.svg)
 
 IVR (“Interactive Voice Response”) systems are often the first point of contact for customers as part of an enterprise’s contact care system.  Unfortunately, IVRs often fall short on the promise of providing “self-service” solutions for customers as IVRs are only capable of connecting to systems that are accessible via API, which even when available can be expensive to implement such solutions.
 
-With UiPath’s Robotic Process Automation (RPA) platform, Amazon Connect can be connected to any system via RPA, drastically expanding IVR fulfillment capabilities to gather information and perform actions across a plethora of systems from on-prem mainframes to cloud-based web services. Increasing the success rate of customer requests being fulfilled by the self-service IVR frees your contact center agents up to work on more complex customer issues. The results? Improved customer and employee experiences, enhanced accuracy, reduced Average Handling Time (“AHT”), and acceleration of customers’ digital transformation initiatives, resulting in a rapid return on investment.
+With UiPath’s Robotic Process Automation (RPA) platform, Amazon Connect can be connected to any system via RPA, drastically expanding IVR fulfillment capabilities to gather information and perform actions across a plethora of systems from on-prem mainframes to cloud-based web services. Increasing the success rate of customer requests being fulfilled by the self-service IVR frees your contact center agents up to work on more complex customer issues. The results? Improved customer and employee experiences, enhanced accuracy, reduced Average Handling Time (“AHT”), and acceleration of your digital transformation initiatives, resulting in a rapid return on investment.
 
 ![Architecture Diagram](./.github/Architecture.png "Integration Architecture")
 
@@ -47,6 +46,7 @@ Access Management (IAM) user role that has the necessary permissions.
    - Client Id
    - Account logical name
    - Tenant logical name 
+7. [Optional] If you want to run the Outbound Demo, you need to download and install the [Amazon CLI](https://aws.amazon.com/cli/) to your machine as the process uses it to make a call with Amazon Connect.
 
 ### Step 3. Create lambda functions
 AWS Lambda functions will be the glue that connect Amazon Connect and UiPath.  There are two primary lambda functions:
@@ -121,32 +121,57 @@ And three helper lambda functions:
 
 **NOTE: If the contact flow fails, try again.  The cold start generally takes longer than the Amazon Connect lambda allows but once the system is in a warm state, the performance improves significantly**
 
-#### Obtaining the organization Unit Id
-We are working to make this easier.  In the meantime, here's a quick way to get the Organization Unit Id.
+#### Configuring the Outbound Demo for your Amazon Connect instance
+For the outbound demo, the OutboundLauncher process uses the command line to make a call with Amazon Connect.  Here are a few things for you to do to run this demo:
+1. [Associate your phone number with the outbound contact flow](https://docs.aws.amazon.com/connect/latest/adminguide/associate-phone-number.html)
+2. Open the UiPath Outbound example flow in the Amazon Connect console and note down two GUIDs from the URL:
+    - instanceId: the GUID immediately following :instance/ (i.e. ccb2057c-f7eb-44a9-af39-e4172dcbcb10)
+    - flowId: the final GUID in the URL (e.g. 1e2ac5e3-2b5a-4872-883a-fca068927c0c)
+    Here's an example URL: https://jmarksuipath.awsapps.com/connect/contact-flows/edit?id=arn:aws:connect:us-west-2:456365885395:instance/**ccb2057c-f7eb-44a9-af39-e4172dcbcb10**/contact-flow/**1e2ac5e3-2b5a-4872-883a-fca068927c0c**
+3. [Run the OutboundLauncher process through orchestrator](https://docs.uipath.com/activities/docs/start-job) and pass the following inputs:
+    - inputExcelFile: Location of the ExceptionList.xls Excel file with the list of numbers to applicants to call (update the first row to have a phone number you can interact with)
+    - outboundPhoneNumber: Phone number that you've [claimed in Amazon Connect](https://docs.aws.amazon.com/connect/latest/adminguide/claim-phone-number.html).  Note it must be in the format **+14255551212**
+    - instanceId: the instanceId from #2 above.
+    - flowId: the flowId from #2 above.
+    
+needs to be updated like your inbound launcher process to parameterize excel file, and instructions to update the command line to match connect instance id, flow instance id and outbound phone number.
+
+#### Obtaining the organization unit id
+The Organization Unit Id represents the Orchestrator folder your processes are stored in.  
 1. Open up a browser and sign into your [Cloud Orchestrator instance](http://cloud.uipath.com)
-2. Navigate to https://cloud.uipath.com/ACCOUNT/TENANT/api/FoldersNavigation/GetFoldersPageForCurrentUser?skip=0&take=50 where ACCOUNT is your account name and tenant is your tenant name (see step 2.6 above).  This will return a JSON blob like the following:
+2. Navigate to https://cloud.uipath.com/ACCOUNT/TENANT/odata/Folders where ACCOUNT is your account name and tenant is your tenant name (see step 2.6 above).  This will return a JSON blob like the following:
 
 ```
 {
-  "PageItems": [
+  "@odata.context": "https://cloud.uipath.com/jmarks/jmarks/odata/$metadata#Folders",
+  "@odata.count": 3,
+  "value": [
     {
-      "IsSelectable": true,
-      "HasChildren": false,
-      "Level": 0,
       "DisplayName": "Default",
       "FullyQualifiedName": "Default",
+      "FullyQualifiedNameOrderable": "Default",
       "Description": null,
-      "IsPersonal": false,
       "ProvisionType": "Manual",
       "PermissionModel": "InheritFromTenant",
       "ParentId": null,
+      "IsActive": true,
       "Id": 60193
+    },
+    {
+      "DisplayName": "HR",
+      "FullyQualifiedName": "HR",
+      "FullyQualifiedNameOrderable": "HR",
+      "Description": null,
+      "ProvisionType": "Manual",
+      "PermissionModel": "InheritFromTenant",
+      "ParentId": null,
+      "IsActive": true,
+      "Id": 227316
     }
-  ],
-  "Count": 1
+  ]
 }
 ```
-3. Take the Id field for the folder your processes are in.  The DisplayName is likely 'Default' like in the example above.
+3. Take the Id field for the folder your processes are stored in.  The DisplayName is likely 'Default' like in the example above.
 
 #### Obtaining a release key 
 We have provided a helper Lambda function, UiPathQueryReleaseKey, for converting a process name into the release key GUID.  You can manually run the lambda from the Lambda Console to get the value you need to provide in the contact flow configuration in step 4.5.  Below is an example of the input you need to pass
