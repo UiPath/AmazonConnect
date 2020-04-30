@@ -1,0 +1,10 @@
+{
+  "name": "uipath-authenticate",
+  "version": "0.0.1",
+  "main": "index.js",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.666.0"
+  }
+}
