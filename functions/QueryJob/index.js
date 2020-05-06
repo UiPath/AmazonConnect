@@ -60,5 +60,6 @@ exports.handler = async (event, context, callback) => {
     let folderId = event.folderId;
     let access_token = await getSecret(process.env.access_token_secret_id);
 
-    return await getJob(`${platformUrl}/${accountName}/${tenantName}/odata/Jobs(${jobKey})`, tenantName, folderId, access_token);
+    const queryJobUrl = `${platformUrl}/${accountName}/${tenantName}/odata/Jobs(${jobKey})`;
+    return await getJob(queryJobUrl, tenantName, folderId, access_token);
 };
