@@ -72,7 +72,8 @@ And three helper lambda functions:
 | UiPathPackInputs                  | Node.js 12.x  | See code below  | index.handler              |
 
 #### UiPathPackInputs code
-```exports.handler = async (event) => {
+```
+exports.handler = async (event) => {
     const inputParams =  JSON.stringify(event['Details']['Parameters']);
     const response ={inputParams};
     return response;
