@@ -4,26 +4,32 @@
         "OrchestratorPlatformUrl": {
             "Type": "String",
             "Default": "https://platform.uipath.com/",
-            "Description": "Orchestrator Platform Url"
+            "Description": "URL for the UiPath Automation Cloud environment.  This should not be changed."
         },
         "OrchestratorAuthUrl": {
             "Type": "String",
-            "Default": "https://account.uipath.com/oauth/token"
+            "Default": "https://account.uipath.com/oauth/token",
+            "Description": "URL for the authentication endpoint.  This should not be changed."
         },
         "OrchestratorApiAccessUserKey": {
-            "Type": "String"
+            "Type": "String",
+            "Description": "Unique login key to be used with APIs.  This is found on the UiPath API Access page."
         },
-        "OrchestratorAccountName": {
-            "Type": "String"
-        },
-        "OrchestratorApiAccessClientId": {
-            "Type": "String"
+        "OrchestratorAccountLogicalName": {
+            "Type": "String",
+            "Description": "Your automation cloud account name.  This is found on the UiPath API Access page."
         },
         "OrchestratorTenantLogicalName": {
-            "Type": "String"
+            "Type": "String",
+            "Description": "The orchestrator service's name.  This is found on the UiPath API Access page."
+        },
+        "OrchestratorApiAccessClientId": {
+            "Type": "String",
+            "Description": "Id string specific to the Orchestrator application itself.  This is found on the UiPath API Access page."
         },
         "S3BucketNameForContactFlows": {
-            "Type": "String"
+            "Type": "String",
+            "Description": "Desired name for the S3 bucket we will create and place sample contact flows in."
         }
     },
     "Metadata": {
@@ -44,7 +50,7 @@
                     },
                     "Parameters": [
                         "OrchestratorApiAccessUserKey",
-                        "OrchestratorAccountName",
+                        "OrchestratorAccountLogicalName",
                         "OrchestratorTenantLogicalName",
                         "OrchestratorApiAccessClientId"
                     ]
@@ -60,7 +66,7 @@
             ],
             "ParameterLabels": {
                 "OrchestratorPlatformUrl": {
-                    "default": "Platform URL"
+                    "default": "Automation Cloud URL"
                 },
                 "OrchestratorAuthUrl": {
                     "default": "Account Authentication URL"
@@ -68,14 +74,14 @@
                 "OrchestratorApiAccessUserKey": {
                     "default": "User Key"
                 },
-                "OrchestratorAccountName": {
-                    "default": "Account Name"
-                },
-                "OrchestratorApiAccessClientId": {
-                    "default": "Client Id"
+                "OrchestratorAccountLogicalName": {
+                    "default": "Account Logical Name"
                 },
                 "OrchestratorTenantLogicalName": {
                     "default": "Tenant Logical Name"
+                },
+                "OrchestratorApiAccessClientId": {
+                    "default": "Client Id"
                 },
                 "S3BucketNameForContactFlows": {
                     "default": "S3 Bucket for saving Contact Flows"
@@ -485,7 +491,7 @@
                             "Ref": "OrchestratorPlatformUrl"
                         },
                         "accountName": {
-                            "Ref": "OrchestratorAccountName"
+                            "Ref": "OrchestratorAccountLogicalName"
                         },
                         "tenantName": {
                             "Ref": "OrchestratorTenantLogicalName"
@@ -528,7 +534,7 @@
                             "Ref": "OrchestratorPlatformUrl"
                         },
                         "accountName": {
-                            "Ref": "OrchestratorAccountName"
+                            "Ref": "OrchestratorAccountLogicalName"
                         },
                         "tenantName": {
                             "Ref": "OrchestratorTenantLogicalName"
