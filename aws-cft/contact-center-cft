@@ -1,9 +1,9 @@
 {
     "AWSTemplateFormatVersion": "2010-09-09",
     "Parameters": {
-        "OrchestratorPlatformUrl": {
+        "OrchestratorUrl": {
             "Type": "String",
-            "Default": "https://platform.uipath.com/",
+            "Default": "https://cloud.uipath.com/",
             "Description": "URL for the UiPath Automation Cloud environment.  This should not be changed."
         },
         "OrchestratorAuthUrl": {
@@ -40,7 +40,7 @@
                         "default": "Orchestrator URLs"
                     },
                     "Parameters": [
-                        "OrchestratorPlatformUrl",
+                        "OrchestratorUrl",
                         "OrchestratorAuthUrl"
                     ]
                 },
@@ -65,7 +65,7 @@
                 }
             ],
             "ParameterLabels": {
-                "OrchestratorPlatformUrl": {
+                "OrchestratorUrl": {
                     "default": "Automation Cloud URL"
                 },
                 "OrchestratorAuthUrl": {
@@ -487,8 +487,8 @@
                 },
                 "Environment": {
                     "Variables": {
-                        "platformUrl": {
-                            "Ref": "OrchestratorPlatformUrl"
+                        "orchestratorUrl": {
+                            "Ref": "OrchestratorUrl"
                         },
                         "accountName": {
                             "Ref": "OrchestratorAccountLogicalName"
@@ -530,8 +530,8 @@
                 },
                 "Environment": {
                     "Variables": {
-                        "platformUrl": {
-                            "Ref": "OrchestratorPlatformUrl"
+                        "orchestratorUrl": {
+                            "Ref": "OrchestratorUrl"
                         },
                         "accountName": {
                             "Ref": "OrchestratorAccountLogicalName"
@@ -902,8 +902,8 @@
                 },
                 "Environment": {
                     "Variables": {
-                        "platformUrl": {
-                            "Ref": "OrchestratorPlatformUrl"
+                        "orchestratorUrl": {
+                            "Ref": "OrchestratorUrl"
                         },
                         "accountName": {
                             "Ref": "OrchestratorAccountName"

@@ -64,14 +64,14 @@ async function startJob(startJobUrl, releaseKey, jobInputArguments, tenantName, 
  * Will succeed with the response body.
  */
 exports.handler = async (event, context, callback) => {
-    let platformUrl = process.env.platformUrl;
+    let orchestratorUrl = process.env.orchestratorUrl;
     let accountName = process.env.accountName;
     let tenantName = process.env.tenantName;
     let releaseKey = event.releaseKey;
     let folderId = event.folderId;
 	let jobInputArguments = JSON.stringify(event.inputArguments || {});
     let access_token = await getSecret(process.env.access_token_secret_id);
-	let startJobUrl = `${platformUrl}/${accountName}/${tenantName}/odata/Jobs/UiPath.Server.Configuration.OData.StartJobs`;
+	let startJobUrl = `${orchestratorUrl}/${accountName}/${tenantName}/odata/Jobs/UiPath.Server.Configuration.OData.StartJobs`;
 	
     return await startJob(startJobUrl, releaseKey, jobInputArguments, tenantName, folderId, access_token);
 };

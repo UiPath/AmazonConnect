@@ -53,7 +53,7 @@ async function getRelease(releaseUrl, tenantName, folderId, access_token) {
  * Will succeed with the response body.
  */
 exports.handler = async (event, context, callback) => {
-    let platformUrl = process.env.platformUrl;
+    let orchestratorUrl = process.env.orchestratorUrl;
     let accountName = process.env.accountName;
     let tenantName = process.env.tenantName;
     let processName = event.processName;
@@ -61,6 +61,6 @@ exports.handler = async (event, context, callback) => {
     let access_token = await getSecret(process.env.access_token_secret_id);
 
     encodedProcessName = encodeURI(processName);
-    const releaseUrl = `${platformUrl}/${accountName}/${tenantName}/odata/Releases?$filter=Name%20eq%20'${encodedProcessName}'`;
+    const releaseUrl = `${orchestratorUrl}/${accountName}/${tenantName}/odata/Releases?$filter=Name%20eq%20'${encodedProcessName}'`;
     return await getRelease(releaseUrl, tenantName, folderId, access_token);
 };

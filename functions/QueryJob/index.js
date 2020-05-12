@@ -53,13 +53,13 @@ async function getJob(jobUrl, tenantName, folderId, access_token) {
  * Will succeed with the response body.
  */
 exports.handler = async (event, context, callback) => {
-    let platformUrl = process.env.platformUrl;
+    let orchestratorUrl = process.env.orchestratorUrl;
     let accountName = process.env.accountName;
     let tenantName = process.env.tenantName;
     let jobKey = event.jobKey;
     let folderId = event.folderId;
     let access_token = await getSecret(process.env.access_token_secret_id);
 
-    const queryJobUrl = `${platformUrl}/${accountName}/${tenantName}/odata/Jobs(${jobKey})`;
+    const queryJobUrl = `${orchestratorUrl}/${accountName}/${tenantName}/odata/Jobs(${jobKey})`;
     return await getJob(queryJobUrl, tenantName, folderId, access_token);
 };
