@@ -66,15 +66,15 @@ To make things easy to deploy, we've hosted the default template in UiPath's S3 
     - EXAMPLE: UiPath-AmazonConnect-ContactFlows
   5. Continue pressing **Next** for 2 screens.
   6. Check the **I acknowledge...** checkbox and finally click **Create Stack**.  It should take less than 2 minutes for all the resources to be created.
-  7. Download the two sample contact flows from the links returned in the output of the stack creation.  These will be uploaded to Amazon Connect in the next step.
-
+  7. When the stack creation is complete, click on the **Outputs** tab and click on the **S3BucketForContactFlows** link.
+  8. Download the two sample contact flows.  These will be uploaded to Amazon Connect in the next step.
 
 Here's an example of the completed form:
 ![Sample CloudFormation stack details](./.github/Stack.png "Sample CloudFormation stack details")
 
 ### Step 4. Create the contact flows in Amazon Connect
 1. Open the Amazon Connect console at https://console.aws.amazon.com/connect/.
-2. Import the sample contact flows, donwloaded in step 3.7 above, into Amazon Connect by following the [Amazon Connect documentation](https://docs.aws.amazon.com/connect/latest/adminguide/contact-flow-import-export.html)
+2. Import the sample contact flows, donwloaded in step 3.8 above, into Amazon Connect by following the [Amazon Connect documentation](https://docs.aws.amazon.com/connect/latest/adminguide/contact-flow-import-export.html)
 3. Change the release key of the processes to launch in the contact flows per the details below:
 
 **Inbound**
@@ -134,7 +134,7 @@ The Organization Unit Id represents the Orchestrator folder your processes are s
 3. Take the Id field for the folder your processes are stored in.  The DisplayName is likely 'Default' like in the example above.
 
 #### Obtaining a release key 
-We have provided a helper Lambda function, UiPathQueryReleaseKey, for converting a process name into the release key GUID.  You can manually run the lambda from the Lambda Console to get the value you need to provide in the contact flow configuration in step 4.5.  Below is an example of the input you need to pass
+We have provided a helper Lambda function, UiPathQueryRelease, for converting a process name into the release key GUID.  You can manually run the lambda from the Lambda Console to get the value you need to provide in the contact flow configuration in step 4.3.  Below is an example of the input you need to pass the lamba
 
 ##### Format
 ```
