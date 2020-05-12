@@ -90,7 +90,7 @@
                 },
                 "position": {
                     "x": 770,
-                    "y": 360
+                    "y": 450
                 },
                 "z": 1,
                 "embeds": []
@@ -141,7 +141,7 @@
                 },
                 "position": {
                     "x": 690,
-                    "y": 440
+                    "y": 540
                 },
                 "z": 1,
                 "embeds": []
@@ -153,7 +153,7 @@
                 },
                 "position": {
                     "x": 840,
-                    "y": 440
+                    "y": 540
                 },
                 "z": 1,
                 "embeds": [],
@@ -315,8 +315,8 @@
                     "height": 60
                 },
                 "position": {
-                    "x": 1410,
-                    "y": 360
+                    "x": 1190,
+                    "y": 480
                 },
                 "z": 1,
                 "embeds": [],
@@ -337,14 +337,17 @@
                 "z": 0,
                 "embeds": []
             },
-            "60a391b9-db7b-40a4-b70d-48bb31bb02fa": {
-                "source": {
-                    "id": "0ff23925-2dc6-4df1-90aa-22839618575d"
+            "5ba9aaae-5c8f-401d-84a4-fad16de63995": {
+                "size": {
+                    "width": 60,
+                    "height": 60
                 },
-                "target": {
-                    "id": "85e8dd97-e0f5-441d-80d7-3cfdd0e00ebb"
+                "position": {
+                    "x": 770,
+                    "y": 350
                 },
-                "z": 11
+                "z": 1,
+                "embeds": []
             }
         }
     },
@@ -873,6 +876,49 @@
                     "id": "85e8dd97-e0f5-441d-80d7-3cfdd0e00ebb"
                 }
             }
+        },
+        "UiPathQueryRelease": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+                "Code": {
+                    "S3Bucket": "uipath-contact-center",
+                    "S3Key": "UiPathContactCenterQueryJob.zip"
+                },
+                "Handler": "index.handler",
+                "Runtime": "nodejs12.x",
+                "MemorySize": 256,
+                "Timeout": 30,
+                "Role": {
+                    "Fn::GetAtt": [
+                        "UiPathAllowLoggingAndSecretManagerRole",
+                        "Arn"
+                    ]
+                },
+                "Environment": {
+                    "Variables": {
+                        "platformUrl": {
+                            "Ref": "OrchestratorPlatformUrl"
+                        },
+                        "accountName": {
+                            "Ref": "OrchestratorAccountName"
+                        },
+                        "tenantName": {
+                            "Ref": "OrchestratorTenantLogicalName"
+                        },
+                        "access_token_secret_id": {
+                            "Ref": "UiPathAccessToken"
+                        }
+                    }
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "5ba9aaae-5c8f-401d-84a4-fad16de63995"
+                }
+            },
+            "DependsOn": [
+                "UiPathAllowLoggingAndSecretManagerRole"
+            ]
         }
     }
 }
