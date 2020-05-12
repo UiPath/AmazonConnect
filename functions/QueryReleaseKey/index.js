@@ -61,6 +61,6 @@ exports.handler = async (event, context, callback) => {
     let access_token = await getSecret(process.env.access_token_secret_id);
 
     let encodedProcessName = encodeURI(processName);
-    const releaseUrl = `${orchestratorUrl}/${accountName}/${tenantName}/odata/Releases?$filter=Name%20eq%20'${encodedProcessName}'`;
+    const releaseUrl = `${orchestratorUrl}/${accountName}/${tenantName}/odata/Releases?$filter=startswith(Name,'${encodedProcessName}')`;
     return await getRelease(releaseUrl, tenantName, folderId, access_token);
 };
