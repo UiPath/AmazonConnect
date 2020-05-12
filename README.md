@@ -139,20 +139,17 @@ We have provided a helper Lambda function, UiPathQueryRelease, for converting a 
 ##### Format
 ```
 {
-  "Parameters": {
-    "organizationUnitId": YOUR_ORGANIZATION_ID,
-    "processName": "PROCESSNAME"
-  }
+  "folderId": "YOUR_ORGANIZATION_ID",
+  "processName": "PROCESSNAME"
 }
 ```
 
 ##### Example
 
-```{
-  "Parameters": {
-    "organizationUnitId": 60193,
-    "processName": "BillLookup"
-  }
+```
+{
+  "folderId": "142196",
+  "processName": "BillLookup"
 }
 ```
 
