@@ -72,7 +72,7 @@
       "parameters": [
         {
           "name": "FunctionArn",
-          "value": "arn:aws:lambda:us-west-2:456365885395:function:UiPathOrchestratorQueryJob",
+          "value": "##QUERY_JOB_LAMBDA_ARN##",
           "namespace": null
         },
         {
@@ -241,7 +241,7 @@
       "parameters": [
         {
           "name": "FunctionArn",
-          "value": "arn:aws:lambda:us-west-2:456365885395:function:UiPathOrchestratorRunJob",
+          "value": "##START_JOB_LAMBDA_ARN##",
           "namespace": null
         },
         {

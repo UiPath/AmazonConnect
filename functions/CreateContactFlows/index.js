@@ -36,7 +36,8 @@ createContactFlow.handler = function (event, context) {
     }
 
     let contactFlows = [
-        'UiPathOutboundExample.json',
+        'UiPath Inbound Example.json',
+        'UiPath Outbound Example.json',
     ];
 
     try {
