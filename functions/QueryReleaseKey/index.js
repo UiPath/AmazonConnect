@@ -60,7 +60,7 @@ exports.handler = async (event, context, callback) => {
     let folderId = event.folderId;
     let access_token = await getSecret(process.env.access_token_secret_id);
 
-    encodedProcessName = encodeURI(processName);
+    let encodedProcessName = encodeURI(processName);
     const releaseUrl = `${orchestratorUrl}/${accountName}/${tenantName}/odata/Releases?$filter=Name%20eq%20'${encodedProcessName}'`;
     return await getRelease(releaseUrl, tenantName, folderId, access_token);
 };
