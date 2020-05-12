@@ -221,6 +221,10 @@
                 },
                 "z": 0,
                 "embeds": [],
+                "isassociatedwith": [
+                    "85e8dd97-e0f5-441d-80d7-3cfdd0e00ebb",
+                    "b76720dc-cc59-4020-b510-86a490cde578"
+                ],
                 "dependson": [
                     "f1829e81-1bf1-44f9-a4da-b40a9d779462"
                 ]
@@ -277,7 +281,7 @@
                     "height": 60
                 },
                 "position": {
-                    "x": 1290,
+                    "x": 1330,
                     "y": 360
                 },
                 "z": 1,
@@ -285,7 +289,8 @@
                 "dependson": [
                     "786cac24-4cf6-4769-9937-1737ce29b296",
                     "0ff23925-2dc6-4df1-90aa-22839618575d",
-                    "963f9244-5ed0-42ff-a750-916edd82443a"
+                    "963f9244-5ed0-42ff-a750-916edd82443a",
+                    "23b47f8c-4b3f-485e-8e1f-721c61d84650"
                 ]
             },
             "b76720dc-cc59-4020-b510-86a490cde578": {
@@ -294,7 +299,7 @@
                     "height": 60
                 },
                 "position": {
-                    "x": 1290,
+                    "x": 1330,
                     "y": 260
                 },
                 "z": 0,
@@ -306,7 +311,7 @@
                     "height": 60
                 },
                 "position": {
-                    "x": 1410,
+                    "x": 1440,
                     "y": 260
                 },
                 "z": 0,
@@ -353,6 +358,18 @@
                     "y": 350
                 },
                 "z": 1,
+                "embeds": []
+            },
+            "23b47f8c-4b3f-485e-8e1f-721c61d84650": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 1120,
+                    "y": -20
+                },
+                "z": 0,
                 "embeds": []
             }
         }
@@ -628,6 +645,12 @@
                 },
                 "Roles": [
                     {
+                        "Ref": "UiPathAllowLoggingRole"
+                    },
+                    {
+                        "Ref": "UiPathAllowS3WriteRole"
+                    },
+                    {
                         "Ref": "UiPathAllowLoggingAndSecretManagerRole"
                     }
                 ]
@@ -743,7 +766,28 @@
                             "Action": [
                                 "s3:PutObject"
                             ],
-                            "Resource": "*"
+                            "Resource": [
+                                {
+                                    "Fn::GetAtt": [
+                                        "UiPathS3ContactFlowsBucket",
+                                        "Arn"
+                                    ]
+                                },
+                                {
+                                    "Fn::Join": [
+                                        "",
+                                        [
+                                            {
+                                                "Fn::GetAtt": [
+                                                    "UiPathS3ContactFlowsBucket",
+                                                    "Arn"
+                                                ]
+                                            },
+                                            "/*"
+                                        ]
+                                    ]
+                                }
+                            ]
                         }
                     ]
                 },
@@ -814,7 +858,8 @@
             "DependsOn": [
                 "InvokeAuthenticate",
                 "UiPathPackInputs",
-                "UiPathAllowS3WritePolicy"
+                "UiPathAllowS3WritePolicy",
+                "UiPathS3ContactFlowsBucket"
             ]
         },
         "InvokeCreateContactFlows": {
@@ -827,7 +872,7 @@
                     ]
                 },
                 "bucketName": {
-                    "Ref": "S3BucketNameForContactFlows"
+                    "Ref": "UiPathS3ContactFlowsBucket"
                 },
                 "CreateInputParamsLambdaArn": {
                     "Fn::GetAtt": [
@@ -906,7 +951,7 @@
                             "Ref": "OrchestratorUrl"
                         },
                         "accountName": {
-                            "Ref": "OrchestratorAccountName"
+                            "Ref": "OrchestratorAccountLogicalName"
                         },
                         "tenantName": {
                             "Ref": "OrchestratorTenantLogicalName"
@@ -925,6 +970,65 @@
             "DependsOn": [
                 "UiPathAllowLoggingAndSecretManagerRole"
             ]
+        },
+        "UiPathS3ContactFlowsBucket": {
+            "Type": "AWS::S3::Bucket",
+            "Properties": {
+                "BucketName": {
+                    "Fn::Join": [
+                        "-",
+                        [
+                            {
+                                "Ref": "S3BucketNameForContactFlows"
+                            },
+                            {
+                                "Fn::Select": [
+                                    0,
+                                    {
+                                        "Fn::Split": [
+                                            "-",
+                                            {
+                                                "Fn::Select": [
+                                                    2,
+                                                    {
+                                                        "Fn::Split": [
+                                                            "/",
+                                                            {
+                                                                "Ref": "AWS::StackId"
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    ]
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "23b47f8c-4b3f-485e-8e1f-721c61d84650"
+                }
+            }
+        }
+    },
+    "Outputs": {
+        "S3BucketForContactFlows": {
+            "Description": "S3 bucket URL where the contact flows were created.",
+            "Value": {
+                "Fn::Join": [
+                    "",
+                    [
+                        "https://s3.console.aws.amazon.com/s3/buckets/",
+                        {
+                            "Ref": "UiPathS3ContactFlowsBucket"
+                        }
+                    ]
+                ]
+            }
         }
     }
 }
