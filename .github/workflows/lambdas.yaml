@@ -43,7 +43,7 @@ jobs:
 
     - name: Build CreateContactFlows
       working-directory: ./functions
-      run: zip -qq -r ./UiPathContactCenterCreateContactFlows.zip ./createContactFlows.js
+      run: zip -qq -j ./UiPathContactCenterCreateContactFlows.zip ./createContactFlows.js ../contactflows/*
 
     - name: Build PackInputs
       working-directory: ./functions
