@@ -30,6 +30,9 @@
         "S3BucketNameForContactFlows": {
             "Type": "String",
             "Description": "Desired name for the S3 bucket we will create and place sample contact flows in."
+        },
+        "AppInsightsKey": {
+            "Type": "String"
         }
     },
     "Metadata": {
@@ -62,6 +65,11 @@
                     "Parameters": [
                         "S3BucketNameForContactFlows"
                     ]
+                },
+                {
+                    "Parameters": [
+                        "AppInsightsKey"
+                    ]
                 }
             ],
             "ParameterLabels": {
@@ -85,6 +93,9 @@
                 },
                 "S3BucketNameForContactFlows": {
                     "default": "S3 Bucket for saving Contact Flows"
+                },
+                "AppInsightsKey": {
+                    "default": "Application Insights Key"
                 }
             }
         },
@@ -449,7 +460,7 @@
                     "S3Bucket": "uipath-contact-center",
                     "S3Key": "UiPathContactCenterAuthenticate.zip"
                 },
-                "Handler": "index.handler",
+                "Handler": "authenticate.handler",
                 "Runtime": "nodejs12.x",
                 "MemorySize": 256,
                 "Timeout": 30,
@@ -472,6 +483,9 @@
                         },
                         "access_token_secret_id": {
                             "Ref": "UiPathAccessToken"
+                        },
+                        "appInsightsKey": {
+                            "Ref": "AppInsightsKey"
                         }
                     }
                 }
@@ -492,7 +506,7 @@
                     "S3Bucket": "uipath-contact-center",
                     "S3Key": "UiPathContactCenterStartJob.zip"
                 },
-                "Handler": "index.handler",
+                "Handler": "startJob.handler",
                 "Runtime": "nodejs12.x",
                 "MemorySize": 256,
                 "Timeout": 30,
@@ -515,6 +529,9 @@
                         },
                         "access_token_secret_id": {
                             "Ref": "UiPathAccessToken"
+                        },
+                        "appInsightsKey": {
+                            "Ref": "AppInsightsKey"
                         }
                     }
                 }
@@ -535,7 +552,7 @@
                     "S3Bucket": "uipath-contact-center",
                     "S3Key": "UiPathContactCenterQueryJob.zip"
                 },
-                "Handler": "index.handler",
+                "Handler": "queryJob.handler",
                 "Runtime": "nodejs12.x",
                 "MemorySize": 256,
                 "Timeout": 30,
@@ -558,6 +575,9 @@
                         },
                         "access_token_secret_id": {
                             "Ref": "UiPathAccessToken"
+                        },
+                        "appInsightsKey": {
+                            "Ref": "AppInsightsKey"
                         }
                     }
                 }
@@ -734,7 +754,7 @@
                     "S3Bucket": "uipath-contact-center",
                     "S3Key": "UiPathContactCenterPackInputs.zip"
                 },
-                "Handler": "index.handler",
+                "Handler": "packInputs.handler",
                 "Runtime": "nodejs12.x",
                 "MemorySize": 256,
                 "Timeout": 30,
@@ -837,9 +857,9 @@
             "Properties": {
                 "Code": {
                     "S3Bucket": "uipath-contact-center",
-                    "S3Key": "UiPathCreateContactFlows.zip"
+                    "S3Key": "UiPathContactCenterCreateContactFlows.zip"
                 },
-                "Handler": "index.handler",
+                "Handler": "createContactFlows.handler",
                 "Runtime": "nodejs12.x",
                 "MemorySize": 256,
                 "Timeout": 30,
@@ -933,9 +953,9 @@
             "Properties": {
                 "Code": {
                     "S3Bucket": "uipath-contact-center",
-                    "S3Key": "UiPathContactCenterQueryJob.zip"
+                    "S3Key": "UiPathContactCenterQueryRelease.zip"
                 },
-                "Handler": "index.handler",
+                "Handler": "queryRelease.handler",
                 "Runtime": "nodejs12.x",
                 "MemorySize": 256,
                 "Timeout": 30,
@@ -958,6 +978,9 @@
                         },
                         "access_token_secret_id": {
                             "Ref": "UiPathAccessToken"
+                        },
+                        "appInsightsKey": {
+                            "Ref": "AppInsightsKey"
                         }
                     }
                 }
