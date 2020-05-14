@@ -1,8 +1,9 @@
 const AWS = require('aws-sdk');
 const https = require('https');
 const url = require('url');
+const initAppInsights = require('./appInsights.js');
 
-var client = new AWS.SecretsManager();
+const client = new AWS.SecretsManager();
 
 async function getSecret(secretId, callback) {
     return new Promise((resolve, reject) => {
@@ -17,15 +18,15 @@ async function getSecret(secretId, callback) {
 }
 
 async function startJob(startJobUrl, releaseKey, jobInputArguments, tenantName, folderId, access_token) {
-	let startJobData = {
-		startInfo: {
-			ReleaseKey: releaseKey,
-			Strategy: "JobsCount",
-			JobsCount: 1,
-			InputArguments: jobInputArguments
-		}
-	};
-	let data = JSON.stringify(startJobData);
+    let startJobData = {
+        startInfo: {
+            ReleaseKey: releaseKey,
+            Strategy: "JobsCount",
+            JobsCount: 1,
+            InputArguments: jobInputArguments
+        }
+    };
+    let data = JSON.stringify(startJobData);
     return new Promise((resolve, reject) => {
         let getJobStatusOptions = url.parse(startJobUrl);
         getJobStatusOptions.method = 'POST';
@@ -34,9 +35,10 @@ async function startJob(startJobUrl, releaseKey, jobInputArguments, tenantName, 
             'Content-Type': 'application/json',
             'X-UIPATH-TenantName': tenantName,
             'X-UIPATH-OrganizationUnitId': folderId,
-			'Content-Length': data.length
+            'Content-Length': data.length
         };
-        
+
+        const start = new Date();
         const req = https.request(getJobStatusOptions, (res) => {
             let body = '';
             res.setEncoding('utf8');
@@ -46,12 +48,17 @@ async function startJob(startJobUrl, releaseKey, jobInputArguments, tenantName, 
                 if (res.headers['content-type'].startsWith('application/json')) {
                     body = JSON.parse(body);
                 }
-                resolve(body);
+
+                if(res.statusCode < 200 || res.statusCode >= 300) {
+                    reject(`HTTP call to '${startJobUrl}' failed with statusCode ${res.statusCode}`);
+                }
+                
+                resolve({ data: body, duration: (new Date() - start), statusCode: res.statusCode });
             });
         });
-        
+
         req.on('error', reject);
-		req.write(data);
+        req.write(data);
         req.end();
     });
 }
@@ -64,14 +71,37 @@ async function startJob(startJobUrl, releaseKey, jobInputArguments, tenantName, 
  * Will succeed with the response body.
  */
 exports.handler = async (event, context, callback) => {
+    const appInsightsClient = initAppInsights(process.env.appInsightsKey);
+
     let orchestratorUrl = process.env.orchestratorUrl;
     let accountName = process.env.accountName;
     let tenantName = process.env.tenantName;
     let releaseKey = event.releaseKey;
     let folderId = event.folderId;
-	let jobInputArguments = JSON.stringify(event.inputArguments || {});
-    let access_token = await getSecret(process.env.access_token_secret_id);
-	let startJobUrl = `${orchestratorUrl}/${accountName}/${tenantName}/odata/Jobs/UiPath.Server.Configuration.OData.StartJobs`;
-	
-    return await startJob(startJobUrl, releaseKey, jobInputArguments, tenantName, folderId, access_token);
+    let jobInputArguments = JSON.stringify(event.inputArguments || {});
+    let startJobUrl = `${orchestratorUrl}/${accountName}/${tenantName}/odata/Jobs/UiPath.Server.Configuration.OData.StartJobs`;
+
+    let job;
+    try {
+        const access_token = await getSecret(process.env.access_token_secret_id);
+        job = await startJob(startJobUrl, releaseKey, jobInputArguments, tenantName, folderId, access_token);
+    } catch (err) {
+        appInsightsClient.trackException({ exception: err });
+    }
+
+    if (!job) {
+        return null;
+    }
+
+    appInsightsClient.trackEvent({
+        name: "StartJob",
+        properties: {
+            accountName,
+            tenantName,
+            responseTime: job.duration,
+            statusCode: job.statusCode,
+        }
+    });
+
+    return job.data;
 };

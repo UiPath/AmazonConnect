@@ -1,8 +1,9 @@
 const AWS = require('aws-sdk');
 const https = require('https');
 const url = require('url');
+const initAppInsights = require('./appInsights.js');
 
-var client = new AWS.SecretsManager();
+const client = new AWS.SecretsManager();
 
 async function getSecret(secretId, callback) {
     return new Promise((resolve, reject) => {
@@ -27,6 +28,7 @@ async function getJob(jobUrl, tenantName, folderId, access_token) {
             'X-UIPATH-OrganizationUnitId': folderId
         };
         
+        const start = new Date();
         const req = https.request(getJobStatusOptions, (res) => {
             let body = '';
             res.setEncoding('utf8');
@@ -36,7 +38,12 @@ async function getJob(jobUrl, tenantName, folderId, access_token) {
                 if (res.headers['content-type'].startsWith('application/json')) {
                     body = JSON.parse(body);
                 }
-                resolve(body);
+                
+                if(res.statusCode < 200 || res.statusCode >= 300) {
+                    reject(`HTTP call to '${jobUrl}' failed with statusCode ${res.statusCode}`);
+                }
+                
+                resolve({ data: body, duration: (new Date() - start), statusCode: res.statusCode });
             });
         });
         
@@ -53,13 +60,40 @@ async function getJob(jobUrl, tenantName, folderId, access_token) {
  * Will succeed with the response body.
  */
 exports.handler = async (event, context, callback) => {
+    const appInsightsClient = initAppInsights(process.env.appInsightsKey);
+
     let orchestratorUrl = process.env.orchestratorUrl;
     let accountName = process.env.accountName;
     let tenantName = process.env.tenantName;
     let jobKey = event.jobKey;
     let folderId = event.folderId;
-    let access_token = await getSecret(process.env.access_token_secret_id);
 
     const queryJobUrl = `${orchestratorUrl}/${accountName}/${tenantName}/odata/Jobs(${jobKey})`;
-    return await getJob(queryJobUrl, tenantName, folderId, access_token);
+
+    let queryJob;
+    try {
+        const access_token = await getSecret(process.env.access_token_secret_id);
+        queryJob = await getJob(queryJobUrl, tenantName, folderId, access_token);
+    } catch (err) {
+        appInsightsClient.trackException({exception: err, measurements: {
+            accountName,
+            tenantName
+        }});
+    }
+
+    if (!queryJob) {
+        return null
+    }
+    
+    appInsightsClient.trackEvent({
+        name: "QueryJob", 
+        properties: {
+            accountName,
+            tenantName,
+            responseTime: queryJob.duration,
+            statusCode: queryJob.statusCode,
+        }
+    });
+
+    return queryJob.data;
 };

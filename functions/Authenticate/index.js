@@ -6,9 +6,9 @@
 const AWS = require('aws-sdk');
 const url = require('url');
 const https = require('https')
+const initAppInsights = require('./appInsights.js');
 
-// Create a Secrets Manager client
-var client = new AWS.SecretsManager({ region: "us-west-2" });
+const client = new AWS.SecretsManager();
 
 // In this sample we only handle the specific exceptions for the 'GetSecretValue' API.
 // See https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
@@ -123,10 +123,7 @@ async function getNewAccessToken(authUrl, client_id, user_key) {
             });
         });
     
-        apiAccessAuthReq.on('error', err => {
-            throw err;
-        });
-    
+        apiAccessAuthReq.on('error', reject);
         apiAccessAuthReq.write(apiAccessAuthBody)
         apiAccessAuthReq.end();
     });
@@ -149,5 +146,9 @@ exports.handler = async (event, context) => {
 		await sendResponse(event, context, 'SUCCESS');
 	} catch (err) {
 		await sendResponse(event, context, 'FAILED', err);
+		appInsightsClient.trackException({exception: err, measurements: {
+            accountName,
+            tenantName
+        }});
 	}
 };

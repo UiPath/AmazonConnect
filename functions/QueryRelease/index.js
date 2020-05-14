@@ -1,8 +1,9 @@
 const AWS = require('aws-sdk');
 const https = require('https');
 const url = require('url');
+const initAppInsights = require('./appInsights.js');
 
-var client = new AWS.SecretsManager();
+const client = new AWS.SecretsManager();
 
 async function getSecret(secretId, callback) {
     return new Promise((resolve, reject) => {
@@ -27,6 +28,7 @@ async function getRelease(releaseUrl, tenantName, folderId, access_token) {
             'X-UIPATH-OrganizationUnitId': folderId
         };
         
+        const start = new Date();
         const req = https.request(getReleaseKeyOptions, (res) => {
             let body = '';
             res.setEncoding('utf8');
@@ -36,7 +38,12 @@ async function getRelease(releaseUrl, tenantName, folderId, access_token) {
                 if (res.headers['content-type'].startsWith('application/json')) {
                     body = JSON.parse(body);
                 }
-                resolve(body);
+                
+                if(res.statusCode < 200 || res.statusCode >= 300) {
+                    reject(`HTTP call to '${releaseUrl}' failed with statusCode ${res.statusCode}`);
+                }
+                
+                resolve({ data: body, duration: (new Date() - start), statusCode: res.statusCode });
             });
         });
         
@@ -53,14 +60,40 @@ async function getRelease(releaseUrl, tenantName, folderId, access_token) {
  * Will succeed with the response body.
  */
 exports.handler = async (event, context, callback) => {
+    const appInsightsClient = initAppInsights(process.env.appInsightsKey);
+    
     let orchestratorUrl = process.env.orchestratorUrl;
     let accountName = process.env.accountName;
     let tenantName = process.env.tenantName;
     let processName = event.processName;
     let folderId = event.folderId;
-    let access_token = await getSecret(process.env.access_token_secret_id);
-
     let encodedProcessName = encodeURI(processName);
-    const releaseUrl = `${orchestratorUrl}/${accountName}/${tenantName}/odata/Releases?$filter=startswith(Name,'${encodedProcessName}')`;
-    return await getRelease(releaseUrl, tenantName, folderId, access_token);
+    
+    let release;
+    try {
+        const access_token = await getSecret(process.env.access_token_secret_id);
+        const releaseUrl = `${orchestratorUrl}/${accountName}/${tenantName}/odata/Releases?$filter=startswith(Name,'${encodedProcessName}')`;
+        release = await getRelease(releaseUrl, tenantName, folderId, access_token);
+    } catch (err) {
+        appInsightsClient.trackException({exception: err, measurements: {
+            accountName,
+            tenantName
+        }});
+    }
+
+    if (!release) {
+        return null;
+    }
+    
+    appInsightsClient.trackEvent({
+        name: "QueryRelease", 
+        properties: {
+            accountName,
+            tenantName,
+            responseTime: release.duration,
+            statusCode: release.statusCode,
+        }
+    });
+    
+    return release.data;
 };
