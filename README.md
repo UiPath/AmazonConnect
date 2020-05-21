@@ -1,8 +1,24 @@
 # Amazon Connect powered by UiPath
 
-IVR (“Interactive Voice Response”) systems are often the first point of contact for customers as part of an enterprise’s contact care system.  Unfortunately, IVRs often fall short on the promise of providing “self-service” solutions for customers as IVRs are only capable of connecting to systems that are accessible via API, which even when available can be expensive to implement such solutions.
+IVR (“Interactive Voice Response”) systems are often the first point of contact for customers as part of an enterprise’s contact care system. Unfortunately, IVRs often fall short on the promise of providing “self-service” solutions for customers as IVRs are only capable of connecting to systems that are accessible via API, which even when available can be expensive to implement such solutions.
 
-With UiPath’s Robotic Process Automation (RPA) platform, Amazon Connect can be connected to any system via RPA, drastically expanding IVR fulfillment capabilities to gather information and perform actions across a plethora of systems from on-prem mainframes to cloud-based web services. Increasing the success rate of customer requests being fulfilled by the self-service IVR frees your contact center agents up to work on more complex customer issues. The results? Improved customer and employee experiences, enhanced accuracy, reduced Average Handling Time (“AHT”), and acceleration of your digital transformation initiatives, resulting in a rapid return on investment.
+With UiPath’s Robotic Process Automation (RPA) platform, [Amazon Connect](https://aws.amazon.com/connect/) can be connected to any system via RPA, drastically expanding IVR fulfillment capabilities to gather information and perform actions across a plethora of systems from on-prem mainframes to cloud-based web services. Increasing the success rate of customer requests being fulfilled by the self-service IVR frees your contact center agents up to work on more complex customer issues. The results? Improved customer and employee experiences, enhanced accuracy, reduced Average Handling Time (“AHT”), and acceleration of your digital transformation initiatives, resulting in a rapid return on investment.
+
+UiPath is a Select Tier Technology Partner of the AWS Partner Network. Learn more about the [UiPath-AWS Partnership](https://www.uipath.com/solutions/technology/amazon-aws).
+
+**Key Features**
+ - **Integrate with all applications with UiPath UI automation and native integrations**. UiPath world-class UI automation capabilities enables automation of any application, browser, or virtual environment. Leveraging UI automation or native integrations, UiPath integrates with any system that your contact center relies on, including systems previously not accessible by Amazon Connect.​​
+ - **Connect Amazon Lex and UiPath RPA to offer 24/7 fully automated support** – for both internal (e.g employee) and external (customer) use cases. Amazon Lex chatbots understand customer or employee intent, and UiPath fulfils requests.  ​
+ - **Seamlessly transfer requests from self-service to contact center agent with human-in-the-loop.** UiPath robots can be leveraged for a seamless handoff from a self-service IVR channel to a live agent, helping agents solve customer problems faster, reduce AHT, and improve satisfaction.​
+ - **Quickly scale to adjust to business needs.** From small automation projects to company-wide extensive scopes, UiPath Orchestrator and UiPath Robots can quickly scale alongside Amazon Connect to meet any enterprise need for normal business cycles or unplanned spikes in call volume in your contact center.
+ 
+**Benefits**
+ - **Joint cost savings**: Amazon Connect and UiPath RPA enable companies to provide cost savings of up to 24x the typical phone interaction: $0.25 all in for a self-service interaction vs $6 minimum for a phone agent interaction. ​
+- **Empower agents to focus on complex issues**: the UiPath integration with Amazon Connect increases request fulfillment success rates in the self-service IVR, freeing contact center agents to work on more complex customer issues.​
+- **Realize rapid ROI**: Streamlined integration capabilities, easy-to-use customizable automation templates and an intuitive UI in UiPath Studio ensure fast deployment and a quick return on investment (ROI) alongside your Amazon Connect instance.​​
+- **Improve customer & employee satisfaction**: With UiPath and Amazon Connect, customers and employee requests are resolved quickly, thereby boosting CSAT and NPS.​
+
+Discover more use cases on the [UiPath blog post](https://www.uipath.com/community/rpa-community-blog/uipath-amazon-connect-contact-center-automation-tutorial)!
 
 ![Architecture Diagram](./.github/Architecture.png "Integration Architecture")
 
