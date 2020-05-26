@@ -344,10 +344,7 @@
 		{
           "name": "Parameter",
           "key": "inputArguments",
-          "value": {
-            "YOUR_INPUT_ARGUMENT_1": "YOUR_INPUT_ARGUMENT_VALUE_1",
-            "YOUR_INPUT_ARGUMENT_2": "YOUR_INPUT_ARGUMENT_VALUE_2"
-          },
+          "value": "{}",
           "namespace": null
         }
       ],

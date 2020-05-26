@@ -26,6 +26,7 @@ async function startJob(startJobUrl, releaseKey, jobInputArguments, tenantName, 
             InputArguments: jobInputArguments
         }
     };
+
     let data = JSON.stringify(startJobData);
     return new Promise((resolve, reject) => {
         let getJobStatusOptions = url.parse(startJobUrl);
@@ -76,10 +77,19 @@ exports.handler = async (event, context, callback) => {
     let orchestratorUrl = process.env.orchestratorUrl;
     let accountName = process.env.accountName;
     let tenantName = process.env.tenantName;
-    let releaseKey = event.Parameters.releaseKey;
-    let folderId = event.Parameters.folderId;
-    let jobInputArguments = JSON.stringify(event.Parameters.inputArguments || {});
+    let releaseKey = event.Details.Parameters.releaseKey;
+    let folderId = event.Details.Parameters.folderId;
     let startJobUrl = `${orchestratorUrl}/${accountName}/${tenantName}/odata/Jobs/UiPath.Server.Configuration.OData.StartJobs`;
+    let jobInputArguments;
+
+    if(event.Details.Parameters.inputArguments) {
+        let jobArguments = JSON.parse(event.Details.Parameters.inputArguments);
+        if (!jobArguments) {
+            throw new Error('inputArguments not a valid JSON');
+        }
+        
+        jobInputArguments = JSON.stringify(jobArguments || {});
+    }
 
     let job;
     try {
@@ -103,5 +113,7 @@ exports.handler = async (event, context, callback) => {
         }
     });
 
-    return job.data;
+    return {
+        jobKey: job.data.value[0].Id,
+    };
 };

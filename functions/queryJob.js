@@ -52,6 +52,18 @@ async function getJob(jobUrl, tenantName, folderId, access_token) {
     });
 }
 
+function flatten(data, response = {}, flatKey = "") {
+  for (const [key, value] of Object.entries(data)) {
+    const newFlatKey = `${flatKey}${key}`;
+    if (typeof value === "object" && value !== null && Object.keys(value).length > 0) {
+      flatten(value, response, `${newFlatKey}`);
+    } else {
+        response[newFlatKey] = value;
+    }
+  }
+  return response;
+};
+
 /**
  * Pass the data to send as `event.data`, and the request options as
  * `event.options`. For more information see the HTTPS module documentation
@@ -65,8 +77,8 @@ exports.handler = async (event, context, callback) => {
     let orchestratorUrl = process.env.orchestratorUrl;
     let accountName = process.env.accountName;
     let tenantName = process.env.tenantName;
-    let jobKey = event.Parameters.jobKey;
-    let folderId = event.Parameters.folderId;
+    let jobKey = event.Details.Parameters.jobKey;
+    let folderId = event.Details.Parameters.folderId;
 
     const queryJobUrl = `${orchestratorUrl}/${accountName}/${tenantName}/odata/Jobs(${jobKey})`;
 
@@ -95,5 +107,13 @@ exports.handler = async (event, context, callback) => {
         }
     });
 
-    return queryJob.data;
+    let output = {
+        State: queryJob.data.State,
+        OutputArguments: JSON.parse(queryJob.data.OutputArguments),
+        jobKey
+    };
+    
+    output = flatten(output);
+    
+    return output;
 };
