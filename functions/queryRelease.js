@@ -65,8 +65,8 @@ exports.handler = async (event, context, callback) => {
     let orchestratorUrl = process.env.orchestratorUrl;
     let accountName = process.env.accountName;
     let tenantName = process.env.tenantName;
-    let processName = event.processName;
-    let folderId = event.folderId;
+    let processName = event.Parameters.processName;
+    let folderId = event.Parameters.folderId;
     let encodedProcessName = encodeURI(processName);
     
     let release;

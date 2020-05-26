@@ -76,9 +76,9 @@ exports.handler = async (event, context, callback) => {
     let orchestratorUrl = process.env.orchestratorUrl;
     let accountName = process.env.accountName;
     let tenantName = process.env.tenantName;
-    let releaseKey = event.releaseKey;
-    let folderId = event.folderId;
-    let jobInputArguments = JSON.stringify(event.inputArguments || {});
+    let releaseKey = event.Parameters.releaseKey;
+    let folderId = event.Parameters.folderId;
+    let jobInputArguments = JSON.stringify(event.Parameters.inputArguments || {});
     let startJobUrl = `${orchestratorUrl}/${accountName}/${tenantName}/odata/Jobs/UiPath.Server.Configuration.OData.StartJobs`;
 
     let job;

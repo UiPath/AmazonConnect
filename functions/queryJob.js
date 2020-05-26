@@ -65,8 +65,8 @@ exports.handler = async (event, context, callback) => {
     let orchestratorUrl = process.env.orchestratorUrl;
     let accountName = process.env.accountName;
     let tenantName = process.env.tenantName;
-    let jobKey = event.jobKey;
-    let folderId = event.folderId;
+    let jobKey = event.Parameters.jobKey;
+    let folderId = event.Parameters.folderId;
 
     const queryJobUrl = `${orchestratorUrl}/${accountName}/${tenantName}/odata/Jobs(${jobKey})`;
 
