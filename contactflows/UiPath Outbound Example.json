@@ -331,45 +331,24 @@
         },
         {
           "name": "Parameter",
-          "key": "accountName",
-          "value": "jmarks",
-          "namespace": null
-        },
-        {
-          "name": "Parameter",
-          "key": "tenantName",
-          "value": "jmarks",
-          "namespace": null
-        },
-        {
-          "name": "Parameter",
-          "key": "clientId",
-          "value": "CLIENTIDGOESHERE",
-          "namespace": null
-        },
-        {
-          "name": "Parameter",
-          "key": "userKey",
-          "value": "USERKEYGOESHERE",
-          "namespace": null
-        },
-        {
-          "name": "Parameter",
-          "key": "organizationUnitId",
-          "value": "60193",
-          "namespace": null
-        },
-        {
-          "name": "Parameter",
           "key": "releaseKey",
-          "value": "f1811672-f735-48b0-9b6f-7746a9998bc4",
+          "value": "YOUR_PROCESS_RELEASE_KEY_HERE",
           "namespace": null
         },
         {
+          "name": "Parameter",
+          "key": "folderId",
+          "value": "YOUR_FOLDER_ID_HERE",
+          "namespace": null
+        },
+		{
           "name": "Parameter",
           "key": "inputArguments",
-          "value": "inputParams",
-          "namespace": "External"
+          "value": {
+            "YOUR_INPUT_ARGUMENT_1": "YOUR_INPUT_ARGUMENT_VALUE_1",
+            "YOUR_INPUT_ARGUMENT_2": "YOUR_INPUT_ARGUMENT_VALUE_2"
+          },
+          "namespace": null
         }
       ],
       "metadata": {
@@ -378,13 +357,9 @@
           "y": 21
         },
         "dynamicMetadata": {
-          "accountName": false,
-          "tenantName": false,
-          "clientId": false,
-          "userKey": false,
-          "organizationUnitId": false,
           "releaseKey": false,
-          "inputArguments": true
+          "folderId": false,
+		      "inputArguments": false
         },
         "useDynamic": false
       },

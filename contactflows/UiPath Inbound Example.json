@@ -82,25 +82,13 @@
         {
           "name": "Parameter",
           "key": "jobKey",
-          "value": "JobKey",
-          "namespace": "External"
-        },
-        {
-          "name": "Parameter",
-          "key": "accountName",
-          "value": "jmarks",
+          "value": "YOUR_JOB_KEY_HERE",
           "namespace": null
         },
         {
           "name": "Parameter",
-          "key": "tenantName",
-          "value": "jmarks",
-          "namespace": null
-        },
-        {
-          "name": "Parameter",
-          "key": "organizationUnitId",
-          "value": "60193",
+          "key": "folderId",
+          "value": "YOUR_FOLDER_ID_HERE",
           "namespace": null
         }
       ],
@@ -110,10 +98,8 @@
           "y": 442
         },
         "dynamicMetadata": {
-          "jobKey": true,
-          "accountName": false,
-          "tenantName": false,
-          "organizationUnitId": false
+          "jobKey": false,
+          "folderId": false
         },
         "useDynamic": false
       },
@@ -250,38 +236,23 @@
         },
         {
           "name": "Parameter",
-          "key": "accountName",
-          "value": "jmarks",
-          "namespace": null
-        },
-        {
-          "name": "Parameter",
-          "key": "tenantName",
-          "value": "jmarks",
-          "namespace": null
-        },
-        {
-          "name": "Parameter",
           "key": "releaseKey",
-          "value": "c796e3b0-5aff-471c-b762-9ac05226938f",
+          "value": "YOUR_PROCESS_RELEASE_KEY_HERE",
           "namespace": null
         },
         {
           "name": "Parameter",
-          "key": "organizationUnitId",
-          "value": "60193",
+          "key": "folderId",
+          "value": "YOUR_FOLDER_ID_HERE",
           "namespace": null
         },
-        {
+		{
           "name": "Parameter",
-          "key": "clientId",
-          "value": "CLIENTIDGOESHERE",
-          "namespace": null
-        },
-        {
-          "name": "Parameter",
-          "key": "userKey",
-          "value": "USERKEYGOESHERE",
+          "key": "inputArguments",
+          "value": {
+          "YOUR_INPUT_ARGUMENT_1": "YOUR_INPUT_ARGUMENT_VALUE_1",
+          "YOUR_INPUT_ARGUMENT_2": "YOUR_INPUT_ARGUMENT_VALUE_2"
+		  },
           "namespace": null
         }
       ],
@@ -291,12 +262,9 @@
           "y": 81
         },
         "dynamicMetadata": {
-          "accountName": false,
-          "tenantName": false,
           "releaseKey": false,
-          "organizationUnitId": false,
-          "clientId": false,
-          "userKey": false
+          "folderId": false,
+		      "inputArguments": false
         },
         "useDynamic": false
       },
