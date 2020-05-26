@@ -66,7 +66,7 @@ To make things easy to deploy, we've hosted the default template in UiPath's S3 
 
 1. Open the [AWS CloudFormation Stack creator](https://us-west-2.console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/create/template)
 2. Set the region to the same region as your Amazon Connect instance.  *NOTE: Amazon Connect only supports using lambda functions in the same region as your contact center.*
-3. Point to the UiPath hosted S3 URL: **[HOSTED URL HERE](https://s3-us-west-2.amazonaws.com/cf-templates-3o3brhjqodlu-us-west-2/20201325vp-CFT)** and click **Next**.
+3. Point to the UiPath hosted S3 URL: **[HOSTED URL HERE](https://uipath-contact-center.s3-us-west-2.amazonaws.com/contact-center-cft)** and click **Next**.
 4. Fill in the form with the pertinent data
   - Stack Name - provide a name for your stack
     - EXAMPLE: UiPath-AmazonConnect
@@ -90,8 +90,9 @@ Here's an example of the completed form:
 
 ### Step 4. Create the contact flows in Amazon Connect
 1. Open the Amazon Connect console at https://console.aws.amazon.com/connect/.
-2. Import the sample contact flows, donwloaded in step 3.8 above, into Amazon Connect by following the [Amazon Connect documentation](https://docs.aws.amazon.com/connect/latest/adminguide/contact-flow-import-export.html)
-3. Change the release key of the processes to launch in the contact flows per the details below:
+2. Add the Lambda Functions to Your Amazon Connect Instance by following the [AWS documentation](https://docs.aws.amazon.com/connect/latest/adminguide/connect-lambda-functions.html#add-lambda-function). Specifically, you need to add UiPathStartJob and UiPathQueryJob.
+3. Import the sample contact flows, donwloaded in step 3.8 above, into Amazon Connect by following the [Amazon Connect documentation](https://docs.aws.amazon.com/connect/latest/adminguide/contact-flow-import-export.html)
+4. Change the release key of the processes to launch in the contact flows per the details below:
 
 **Inbound**
  - Invoke AWS Lambda function #1
@@ -150,7 +151,7 @@ The Organization Unit Id represents the Orchestrator folder your processes are s
 3. Take the Id field for the folder your processes are stored in.  The DisplayName is likely 'Default' like in the example above.
 
 #### Obtaining a release key 
-We have provided a helper Lambda function, UiPathQueryRelease, for converting a process name into the release key GUID.  You can manually run the lambda from the Lambda Console to get the value you need to provide in the contact flow configuration in step 4.3.  Below is an example of the input you need to pass the lamba
+We have provided a helper Lambda function, UiPathQueryRelease, for converting a process name into the release key GUID.  You can manually run the lambda from the Lambda Console to get the value you need to provide in the contact flow configuration in step 4.3.  Below is an example of the input you need to pass the lambda.  Note that the process passed in must match the name found in Orchestrator.
 
 ##### Format
 ```
