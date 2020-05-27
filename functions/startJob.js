@@ -1,23 +1,9 @@
-const AWS = require('aws-sdk');
 const https = require('https');
 const url = require('url');
-const initAppInsights = require('./appInsights.js');
-
-const client = new AWS.SecretsManager();
+const initAppInsights = require('./appInsights');
+const { getSecret } = require('./secretManager');
 
 const FOLDER_TYPE_CLASSIC = 'classic';
-
-async function getSecret(secretId, callback) {
-    return new Promise((resolve, reject) => {
-        client.getSecretValue({ SecretId: secretId }, function (err, data) {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(data.SecretString);
-            }
-        });
-    });
-}
 
 async function startJob(startJobUrl, releaseKey, jobInputArguments, tenantName, folderId, folderType, access_token) {
     let Strategy;

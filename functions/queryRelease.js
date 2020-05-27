@@ -1,21 +1,7 @@
-const AWS = require('aws-sdk');
 const https = require('https');
 const url = require('url');
 const initAppInsights = require('./appInsights.js');
-
-const client = new AWS.SecretsManager();
-
-async function getSecret(secretId, callback) {
-    return new Promise((resolve, reject) => {
-        client.getSecretValue({ SecretId: secretId }, function (err, data) {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(data.SecretString);
-            }
-        });
-    });
-}
+const { getSecret } = require('./secretManager');
 
 async function getRelease(releaseUrl, tenantName, folderId, access_token) {
     return new Promise((resolve, reject) => {

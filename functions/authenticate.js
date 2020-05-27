@@ -3,40 +3,9 @@
 // https://aws.amazon.com/developers/getting-started/nodejs/
 
 // Load the AWS SDK
-const AWS = require('aws-sdk');
 const url = require('url');
 const https = require('https')
-const initAppInsights = require('./appInsights.js');
-
-const client = new AWS.SecretsManager();
-
-// In this sample we only handle the specific exceptions for the 'GetSecretValue' API.
-// See https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
-// We rethrow the exception by default.
-
-async function getSecret(secretId, callback) {
-    return new Promise((resolve, reject) => {
-        client.getSecretValue({ SecretId: secretId }, function (err, data) {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(data.SecretString);
-            }
-        });
-    });
-}
-
-async function updateSecret(secretId, secretValue) {
-    return new Promise((resolve, reject) => {
-        client.updateSecret({ SecretId: secretId, SecretString: secretValue }, function (error, data) {
-            if (error) {
-                reject(error);
-            } else {
-                resolve(null);
-            }
-        });
-    });
-}
+const { getSecret, updateSecret } = require('./secretManager');
 
 function getReason(err) {
   if (err)
