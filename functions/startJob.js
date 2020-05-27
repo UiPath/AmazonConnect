@@ -5,6 +5,8 @@ const initAppInsights = require('./appInsights.js');
 
 const client = new AWS.SecretsManager();
 
+const FOLDER_TYPE_CLASSIC = 'classic';
+
 async function getSecret(secretId, callback) {
     return new Promise((resolve, reject) => {
         client.getSecretValue({ SecretId: secretId }, function (err, data) {
@@ -17,11 +19,21 @@ async function getSecret(secretId, callback) {
     });
 }
 
-async function startJob(startJobUrl, releaseKey, jobInputArguments, tenantName, folderId, access_token) {
+async function startJob(startJobUrl, releaseKey, jobInputArguments, tenantName, folderId, folderType, access_token) {
+    let Strategy;
+
+    folderType = folderType.toLowerCase()
+    switch (folderType) {
+        case FOLDER_TYPE_CLASSIC: Strategy = 'JobsCount'; break;
+        case FOLDER_TYPE_MODERN: Strategy = 'ModernJobsCount'; break;
+        default: 
+            throw new Error(`Invalid value for 'folderType'. Should be either 'Classic' OR 'Modern'.`);
+    }
+
     let startJobData = {
         startInfo: {
             ReleaseKey: releaseKey,
-            Strategy: "JobsCount",
+            Strategy,
             JobsCount: 1,
             InputArguments: jobInputArguments
         }
@@ -79,6 +91,7 @@ exports.handler = async (event, context, callback) => {
     let tenantName = process.env.tenantName;
     let releaseKey = event.Details.Parameters.releaseKey;
     let folderId = event.Details.Parameters.folderId;
+    let folderType = event.Details.Parameters.folderType || FOLDER_TYPE_CLASSIC;
     let startJobUrl = `${orchestratorUrl}/${accountName}/${tenantName}/odata/Jobs/UiPath.Server.Configuration.OData.StartJobs`;
     let jobInputArguments;
 
@@ -94,7 +107,7 @@ exports.handler = async (event, context, callback) => {
     let job;
     try {
         const access_token = await getSecret(process.env.access_token_secret_id);
-        job = await startJob(startJobUrl, releaseKey, jobInputArguments, tenantName, folderId, access_token);
+        job = await startJob(startJobUrl, releaseKey, jobInputArguments, tenantName, folderId, folderType, access_token);
     } catch (err) {
         appInsightsClient.trackException({ exception: err });
     }
