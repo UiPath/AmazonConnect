@@ -237,13 +237,13 @@
         {
           "name": "Parameter",
           "key": "releaseKey",
-          "value": "58938e5e-5d8b-45cb-90ca-52e13328c593",
+          "value": "YOUR_RELEASE_KEY_HERE",
           "namespace": null
         },
         {
           "name": "Parameter",
           "key": "folderId",
-          "value": "142196",
+          "value": "YOUR_FOLDER_ID_HERE",
           "namespace": null
         },
 		{

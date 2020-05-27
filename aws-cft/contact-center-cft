@@ -382,6 +382,51 @@
                 },
                 "z": 0,
                 "embeds": []
+            },
+            "b7e91d2e-2e6a-4b71-a42c-0e85c75f4f91": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 630,
+                    "y": 350
+                },
+                "z": 1,
+                "embeds": [],
+                "dependson": [
+                    "5ba9aaae-5c8f-401d-84a4-fad16de63995"
+                ]
+            },
+            "5371f920-2c60-48a0-8b76-b189df221ff1": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 630,
+                    "y": 280
+                },
+                "z": 1,
+                "embeds": [],
+                "dependson": [
+                    "c973d49f-73fa-4a7b-856d-9308c9a68249"
+                ]
+            },
+            "4d1133b6-ab4d-4d10-9722-ef3e7d9cf391": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 630,
+                    "y": 200
+                },
+                "z": 1,
+                "embeds": [],
+                "dependson": [
+                    "9e1d4126-ce88-46f7-bdeb-c249df1db9b6"
+                ]
             }
         }
     },
@@ -1036,6 +1081,69 @@
                     "id": "23b47f8c-4b3f-485e-8e1f-721c61d84650"
                 }
             }
+        },
+        "UiPathQueryReleasePermissions": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+                "FunctionName": {
+                    "Ref": "UiPathQueryRelease"
+                },
+                "Action": "lambda:InvokeFunction",
+                "Principal": "connect.amazonaws.com",
+                "SourceAccount": {
+                    "Ref": "AWS::AccountId"
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "b7e91d2e-2e6a-4b71-a42c-0e85c75f4f91"
+                }
+            },
+            "DependsOn": [
+                "UiPathQueryRelease"
+            ]
+        },
+        "UiPathQueryJobPermissions": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+                "FunctionName": {
+                    "Ref": "UiPathQueryJob"
+                },
+                "Action": "lambda:InvokeFunction",
+                "Principal": "connect.amazonaws.com",
+                "SourceAccount": {
+                    "Ref": "AWS::AccountId"
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "5371f920-2c60-48a0-8b76-b189df221ff1"
+                }
+            },
+            "DependsOn": [
+                "UiPathQueryJob"
+            ]
+        },
+        "UiPathStartJobPermissions": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+                "FunctionName": {
+                    "Ref": "UiPathStartJob"
+                },
+                "Action": "lambda:InvokeFunction",
+                "Principal": "connect.amazonaws.com",
+                "SourceAccount": {
+                    "Ref": "AWS::AccountId"
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "4d1133b6-ab4d-4d10-9722-ef3e7d9cf391"
+                }
+            },
+            "DependsOn": [
+                "UiPathStartJob"
+            ]
         }
     },
     "Outputs": {
