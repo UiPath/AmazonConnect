@@ -1080,7 +1080,8 @@
                 "AWS::CloudFormation::Designer": {
                     "id": "23b47f8c-4b3f-485e-8e1f-721c61d84650"
                 }
-            }
+            },
+            "DeletionPolicy": "Retain"
         },
         "UiPathQueryReleasePermissions": {
             "Type": "AWS::Lambda::Permission",
