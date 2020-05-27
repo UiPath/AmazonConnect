@@ -58,7 +58,7 @@ exports.handler = async (event, context, callback) => {
     let release;
     try {
         const access_token = await getSecret(process.env.access_token_secret_id);
-        const releaseUrl = `${orchestratorUrl}/${accountName}/${tenantName}/odata/Releases?$filter=startswith(Name,'${encodedProcessName}')`;
+        const releaseUrl = `${orchestratorUrl}/${accountName}/${tenantName}/odata/Releases?$filter=Name%20eq%20'${encodedProcessName}')`;
         release = await getRelease(releaseUrl, tenantName, folderId, access_token);
     } catch (err) {
         appInsightsClient.trackException({exception: err, measurements: {
