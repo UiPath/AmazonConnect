@@ -1,7 +1,7 @@
 const https = require('https');
 const url = require('url');
-const initAppInsights = require('./appInsights');
-const { getSecret } = require('./secretManager');
+const initAppInsights = require('./appInsights.js');
+const { getSecret } = require('./secretManager.js');
 
 const FOLDER_TYPE_CLASSIC = 'classic';
 

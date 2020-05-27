@@ -341,11 +341,11 @@
           "value": "YOUR_FOLDER_ID_HERE",
           "namespace": null
         },
-		{
+        {
           "name": "Parameter",
           "key": "inputArguments",
-          "value": "{}",
-          "namespace": null
+          "value": "inputParams",
+          "namespace": "External"
         }
       ],
       "metadata": {

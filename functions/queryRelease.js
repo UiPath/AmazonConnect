@@ -1,7 +1,7 @@
 const https = require('https');
 const url = require('url');
 const initAppInsights = require('./appInsights.js');
-const { getSecret } = require('./secretManager');
+const { getSecret } = require('./secretManager.js');
 
 async function getRelease(releaseUrl, tenantName, folderId, access_token) {
     return new Promise((resolve, reject) => {

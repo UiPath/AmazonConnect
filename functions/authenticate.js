@@ -5,7 +5,7 @@
 // Load the AWS SDK
 const url = require('url');
 const https = require('https')
-const { getSecret, updateSecret } = require('./secretManager');
+const { getSecret, updateSecret } = require('./secretManager.js');
 
 function getReason(err) {
   if (err)
