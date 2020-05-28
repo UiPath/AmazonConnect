@@ -1,0 +1,1143 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Parameters": {
+        "OrchestratorUrl": {
+            "Type": "String",
+            "Default": "https://cloud.uipath.com/",
+            "Description": "URL for the UiPath Automation Cloud environment.  This should not be changed."
+        },
+        "OrchestratorAuthUrl": {
+            "Type": "String",
+            "Default": "https://account.uipath.com/oauth/token",
+            "Description": "URL for the authentication endpoint.  This should not be changed."
+        },
+        "OrchestratorApiAccessUserKey": {
+            "Type": "String",
+            "Description": "Unique login key to be used with APIs.  This is found on the UiPath API Access page."
+        },
+        "OrchestratorAccountLogicalName": {
+            "Type": "String",
+            "Description": "Your automation cloud account name.  This is found on the UiPath API Access page."
+        },
+        "OrchestratorTenantLogicalName": {
+            "Type": "String",
+            "Description": "The orchestrator service's name.  This is found on the UiPath API Access page."
+        },
+        "OrchestratorApiAccessClientId": {
+            "Type": "String",
+            "Description": "Id string specific to the Orchestrator application itself.  This is found on the UiPath API Access page."
+        },
+        "S3BucketNameForContactFlows": {
+            "Type": "String",
+            "Description": "Desired name for the S3 bucket we will create and place sample contact flows in."
+        }
+    },
+    "Metadata": {
+        "AWS::CloudFormation::Interface": {
+            "ParameterGroups": [
+                {
+                    "Label": {
+                        "default": "Orchestrator URLs"
+                    },
+                    "Parameters": [
+                        "OrchestratorUrl",
+                        "OrchestratorAuthUrl"
+                    ]
+                },
+                {
+                    "Label": {
+                        "default": "Orchestrator API Access"
+                    },
+                    "Parameters": [
+                        "OrchestratorApiAccessUserKey",
+                        "OrchestratorAccountLogicalName",
+                        "OrchestratorTenantLogicalName",
+                        "OrchestratorApiAccessClientId"
+                    ]
+                },
+                {
+                    "Label": {
+                        "default": "Contact Flows S3 bucket details"
+                    },
+                    "Parameters": [
+                        "S3BucketNameForContactFlows"
+                    ]
+                }
+            ],
+            "ParameterLabels": {
+                "OrchestratorUrl": {
+                    "default": "Automation Cloud URL"
+                },
+                "OrchestratorAuthUrl": {
+                    "default": "Account Authentication URL"
+                },
+                "OrchestratorApiAccessUserKey": {
+                    "default": "User Key"
+                },
+                "OrchestratorAccountLogicalName": {
+                    "default": "Account Logical Name"
+                },
+                "OrchestratorTenantLogicalName": {
+                    "default": "Tenant Logical Name"
+                },
+                "OrchestratorApiAccessClientId": {
+                    "default": "Client Id"
+                },
+                "S3BucketNameForContactFlows": {
+                    "default": "S3 Bucket for saving Contact Flows"
+                }
+            }
+        },
+        "AWS::CloudFormation::Designer": {
+            "68532bb8-9617-4031-b4f0-672dc48df5e2": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 770,
+                    "y": 450
+                },
+                "z": 1,
+                "embeds": []
+            },
+            "c973d49f-73fa-4a7b-856d-9308c9a68249": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 770,
+                    "y": 280
+                },
+                "z": 1,
+                "embeds": []
+            },
+            "9e1d4126-ce88-46f7-bdeb-c249df1db9b6": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 770,
+                    "y": 200
+                },
+                "z": 1,
+                "embeds": []
+            },
+            "5ecd6b2e-3913-42c9-9925-fc0c0d76cd32": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 680,
+                    "y": 100
+                },
+                "z": 1,
+                "embeds": [],
+                "dependson": [
+                    "750c790d-cd4b-49ed-82f3-44dcfc0d279f"
+                ]
+            },
+            "e161f4a4-b911-4561-81eb-d877bfb93ab1": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 690,
+                    "y": 540
+                },
+                "z": 1,
+                "embeds": []
+            },
+            "8dc3c699-7f61-4e13-8507-0ff656a7c7da": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 840,
+                    "y": 540
+                },
+                "z": 1,
+                "embeds": [],
+                "isassociatedwith": [
+                    "68532bb8-9617-4031-b4f0-672dc48df5e2"
+                ]
+            },
+            "f1829e81-1bf1-44f9-a4da-b40a9d779462": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 850,
+                    "y": 100
+                },
+                "z": 1,
+                "embeds": [],
+                "dependson": [
+                    "5ecd6b2e-3913-42c9-9925-fc0c0d76cd32",
+                    "e2533b58-79da-42d4-968a-66b0f79e0fc7"
+                ]
+            },
+            "526514f8-0a7c-4067-95e3-5e1eec404e08": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 680,
+                    "y": -120
+                },
+                "z": 1,
+                "embeds": []
+            },
+            "750c790d-cd4b-49ed-82f3-44dcfc0d279f": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 680,
+                    "y": -10
+                },
+                "z": 1,
+                "embeds": [],
+                "dependson": [
+                    "526514f8-0a7c-4067-95e3-5e1eec404e08"
+                ]
+            },
+            "c991bd67-03c2-4323-b884-83787196290a": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 950,
+                    "y": -10
+                },
+                "z": 0,
+                "embeds": [],
+                "isassociatedwith": [
+                    "85e8dd97-e0f5-441d-80d7-3cfdd0e00ebb",
+                    "b76720dc-cc59-4020-b510-86a490cde578"
+                ],
+                "dependson": [
+                    "f1829e81-1bf1-44f9-a4da-b40a9d779462"
+                ]
+            },
+            "e2533b58-79da-42d4-968a-66b0f79e0fc7": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 850,
+                    "y": -10
+                },
+                "z": 0,
+                "embeds": [],
+                "dependson": [
+                    "f1829e81-1bf1-44f9-a4da-b40a9d779462"
+                ]
+            },
+            "786cac24-4cf6-4769-9937-1737ce29b296": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 1050,
+                    "y": 360
+                },
+                "z": 1,
+                "embeds": [],
+                "dependson": [
+                    "c991bd67-03c2-4323-b884-83787196290a",
+                    "e2533b58-79da-42d4-968a-66b0f79e0fc7"
+                ]
+            },
+            "0ff23925-2dc6-4df1-90aa-22839618575d": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 1190,
+                    "y": 360
+                },
+                "z": 1,
+                "embeds": [],
+                "dependson": [
+                    "786cac24-4cf6-4769-9937-1737ce29b296"
+                ]
+            },
+            "d203d625-ae0d-4f49-adf0-7148bd717a27": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 1330,
+                    "y": 360
+                },
+                "z": 1,
+                "embeds": [],
+                "dependson": [
+                    "786cac24-4cf6-4769-9937-1737ce29b296",
+                    "0ff23925-2dc6-4df1-90aa-22839618575d",
+                    "963f9244-5ed0-42ff-a750-916edd82443a",
+                    "23b47f8c-4b3f-485e-8e1f-721c61d84650"
+                ]
+            },
+            "b76720dc-cc59-4020-b510-86a490cde578": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 1330,
+                    "y": 260
+                },
+                "z": 0,
+                "embeds": []
+            },
+            "963f9244-5ed0-42ff-a750-916edd82443a": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 1440,
+                    "y": 260
+                },
+                "z": 0,
+                "embeds": [],
+                "dependson": [
+                    "b76720dc-cc59-4020-b510-86a490cde578"
+                ]
+            },
+            "99a36e59-a036-44f0-9678-b88f19422dff": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 1190,
+                    "y": 480
+                },
+                "z": 1,
+                "embeds": [],
+                "dependson": [
+                    "c991bd67-03c2-4323-b884-83787196290a",
+                    "e2533b58-79da-42d4-968a-66b0f79e0fc7"
+                ]
+            },
+            "85e8dd97-e0f5-441d-80d7-3cfdd0e00ebb": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 1190,
+                    "y": 260
+                },
+                "z": 0,
+                "embeds": []
+            },
+            "5ba9aaae-5c8f-401d-84a4-fad16de63995": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 770,
+                    "y": 350
+                },
+                "z": 1,
+                "embeds": []
+            },
+            "23b47f8c-4b3f-485e-8e1f-721c61d84650": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 1120,
+                    "y": -20
+                },
+                "z": 0,
+                "embeds": []
+            },
+            "b7e91d2e-2e6a-4b71-a42c-0e85c75f4f91": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 630,
+                    "y": 350
+                },
+                "z": 1,
+                "embeds": [],
+                "dependson": [
+                    "5ba9aaae-5c8f-401d-84a4-fad16de63995"
+                ]
+            },
+            "5371f920-2c60-48a0-8b76-b189df221ff1": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 630,
+                    "y": 280
+                },
+                "z": 1,
+                "embeds": [],
+                "dependson": [
+                    "c973d49f-73fa-4a7b-856d-9308c9a68249"
+                ]
+            },
+            "4d1133b6-ab4d-4d10-9722-ef3e7d9cf391": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 630,
+                    "y": 200
+                },
+                "z": 1,
+                "embeds": [],
+                "dependson": [
+                    "9e1d4126-ce88-46f7-bdeb-c249df1db9b6"
+                ]
+            }
+        }
+    },
+    "Resources": {
+        "UiPathClientId": {
+            "Type": "AWS::SecretsManager::Secret",
+            "Properties": {
+                "Description": "Client Id for API access for UiPath Orchestrator",
+                "SecretString": {
+                    "Ref": "OrchestratorApiAccessClientId"
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "526514f8-0a7c-4067-95e3-5e1eec404e08"
+                }
+            }
+        },
+        "UiPathUserKey": {
+            "Type": "AWS::SecretsManager::Secret",
+            "Properties": {
+                "Description": "User Key for API access for UiPath Orchestrator",
+                "SecretString": {
+                    "Ref": "OrchestratorApiAccessUserKey"
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "750c790d-cd4b-49ed-82f3-44dcfc0d279f"
+                }
+            },
+            "DependsOn": [
+                "UiPathClientId"
+            ]
+        },
+        "UiPathAccessToken": {
+            "Type": "AWS::SecretsManager::Secret",
+            "Properties": {
+                "Description": "User Key for API access for UiPath Orchestrator",
+                "SecretString": "init access token"
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "5ecd6b2e-3913-42c9-9925-fc0c0d76cd32"
+                }
+            },
+            "DependsOn": [
+                "UiPathUserKey"
+            ]
+        },
+        "UiPathAuthenticatePermissions": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+                "FunctionName": {
+                    "Ref": "UiPathAuthenticate"
+                },
+                "Action": "lambda:InvokeFunction",
+                "Principal": "events.amazonaws.com",
+                "SourceArn": {
+                    "Fn::GetAtt": [
+                        "UiPathAuthenticateScheduledRule",
+                        "Arn"
+                    ]
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "8dc3c699-7f61-4e13-8507-0ff656a7c7da"
+                }
+            }
+        },
+        "UiPathAuthenticate": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+                "Code": {
+                    "S3Bucket": "uipath-contact-center",
+                    "S3Key": "UiPathContactCenterAuthenticate.zip"
+                },
+                "Handler": "authenticate.handler",
+                "Runtime": "nodejs12.x",
+                "MemorySize": 256,
+                "Timeout": 30,
+                "Role": {
+                    "Fn::GetAtt": [
+                        "UiPathAllowLoggingAndSecretManagerRole",
+                        "Arn"
+                    ]
+                },
+                "Environment": {
+                    "Variables": {
+                        "api_access_auth_url": {
+                            "Ref": "OrchestratorAuthUrl"
+                        },
+                        "api_access_key_client_id_secret_id": {
+                            "Ref": "UiPathClientId"
+                        },
+                        "api_access_key_user_key_secret_id": {
+                            "Ref": "UiPathUserKey"
+                        },
+                        "access_token_secret_id": {
+                            "Ref": "UiPathAccessToken"
+                        }
+                    }
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "68532bb8-9617-4031-b4f0-672dc48df5e2"
+                }
+            },
+            "DependsOn": [
+                "UiPathAllowLoggingAndSecretManagerRole"
+            ]
+        },
+        "UiPathStartJob": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+                "Code": {
+                    "S3Bucket": "uipath-contact-center",
+                    "S3Key": "UiPathContactCenterStartJob.zip"
+                },
+                "Handler": "startJob.handler",
+                "Runtime": "nodejs12.x",
+                "MemorySize": 256,
+                "Timeout": 30,
+                "Role": {
+                    "Fn::GetAtt": [
+                        "UiPathAllowLoggingAndSecretManagerRole",
+                        "Arn"
+                    ]
+                },
+                "Environment": {
+                    "Variables": {
+                        "orchestratorUrl": {
+                            "Ref": "OrchestratorUrl"
+                        },
+                        "accountName": {
+                            "Ref": "OrchestratorAccountLogicalName"
+                        },
+                        "tenantName": {
+                            "Ref": "OrchestratorTenantLogicalName"
+                        },
+                        "access_token_secret_id": {
+                            "Ref": "UiPathAccessToken"
+                        }
+                    }
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "9e1d4126-ce88-46f7-bdeb-c249df1db9b6"
+                }
+            },
+            "DependsOn": [
+                "UiPathAllowLoggingAndSecretManagerRole"
+            ]
+        },
+        "UiPathQueryJob": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+                "Code": {
+                    "S3Bucket": "uipath-contact-center",
+                    "S3Key": "UiPathContactCenterQueryJob.zip"
+                },
+                "Handler": "queryJob.handler",
+                "Runtime": "nodejs12.x",
+                "MemorySize": 256,
+                "Timeout": 30,
+                "Role": {
+                    "Fn::GetAtt": [
+                        "UiPathAllowLoggingAndSecretManagerRole",
+                        "Arn"
+                    ]
+                },
+                "Environment": {
+                    "Variables": {
+                        "orchestratorUrl": {
+                            "Ref": "OrchestratorUrl"
+                        },
+                        "accountName": {
+                            "Ref": "OrchestratorAccountLogicalName"
+                        },
+                        "tenantName": {
+                            "Ref": "OrchestratorTenantLogicalName"
+                        },
+                        "access_token_secret_id": {
+                            "Ref": "UiPathAccessToken"
+                        }
+                    }
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "c973d49f-73fa-4a7b-856d-9308c9a68249"
+                }
+            },
+            "DependsOn": [
+                "UiPathAllowLoggingAndSecretManagerRole"
+            ]
+        },
+        "UiPathAuthenticateScheduledRule": {
+            "Type": "AWS::Events::Rule",
+            "Properties": {
+                "Description": "ScheduledRule",
+                "ScheduleExpression": "rate(50 minutes)",
+                "State": "ENABLED",
+                "Targets": [
+                    {
+                        "Arn": {
+                            "Fn::GetAtt": [
+                                "UiPathAuthenticate",
+                                "Arn"
+                            ]
+                        },
+                        "Id": "TargetUiPathOrchestratorAuthenticate"
+                    }
+                ]
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "e161f4a4-b911-4561-81eb-d877bfb93ab1"
+                }
+            },
+            "DependsOn": [
+                "UiPathAuthenticate"
+            ]
+        },
+        "UiPathAllowLoggingAndSecretManagerRole": {
+            "Type": "AWS::IAM::Role",
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "f1829e81-1bf1-44f9-a4da-b40a9d779462"
+                }
+            },
+            "Properties": {
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Service": [
+                                    "lambda.amazonaws.com"
+                                ]
+                            },
+                            "Action": [
+                                "sts:AssumeRole"
+                            ]
+                        }
+                    ]
+                },
+                "Description": "Role for adding permissions for logging and secret manager"
+            },
+            "DependsOn": []
+        },
+        "UiPathAllowLoggingPolicy": {
+            "Type": "AWS::IAM::Policy",
+            "Properties": {
+                "PolicyName": "UiPathAllowLoggingPolicy",
+                "PolicyDocument": {
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Action": [
+                                "logs:CreateLogGroup",
+                                "logs:CreateLogStream",
+                                "logs:PutLogEvents"
+                            ],
+                            "Resource": "arn:aws:logs:*:*:*"
+                        }
+                    ]
+                },
+                "Roles": [
+                    {
+                        "Ref": "UiPathAllowLoggingRole"
+                    },
+                    {
+                        "Ref": "UiPathAllowS3WriteRole"
+                    },
+                    {
+                        "Ref": "UiPathAllowLoggingAndSecretManagerRole"
+                    }
+                ]
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "c991bd67-03c2-4323-b884-83787196290a"
+                }
+            },
+            "DependsOn": [
+                "UiPathAllowLoggingAndSecretManagerRole"
+            ]
+        },
+        "UiPathSecretManagerPolicy": {
+            "Type": "AWS::IAM::Policy",
+            "Properties": {
+                "PolicyName": "UiPathSecretManagerPolicy",
+                "PolicyDocument": {
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Action": [
+                                "secretsmanager:GetSecretValue",
+                                "secretsmanager:PutSecretValue",
+                                "secretsmanager:UpdateSecret"
+                            ],
+                            "Resource": [
+                                {
+                                    "Ref": "UiPathClientId"
+                                },
+                                {
+                                    "Ref": "UiPathUserKey"
+                                },
+                                {
+                                    "Ref": "UiPathAccessToken"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "Roles": [
+                    {
+                        "Ref": "UiPathAllowLoggingAndSecretManagerRole"
+                    }
+                ]
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "e2533b58-79da-42d4-968a-66b0f79e0fc7"
+                }
+            },
+            "DependsOn": [
+                "UiPathAllowLoggingAndSecretManagerRole"
+            ]
+        },
+        "InvokeAuthenticate": {
+            "Type": "Custom::UiPathAuthenticate",
+            "Properties": {
+                "ServiceToken": {
+                    "Fn::GetAtt": [
+                        "UiPathAuthenticate",
+                        "Arn"
+                    ]
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "786cac24-4cf6-4769-9937-1737ce29b296"
+                }
+            },
+            "DependsOn": [
+                "UiPathAllowLoggingPolicy",
+                "UiPathSecretManagerPolicy",
+                "UiPathAuthenticate"
+            ]
+        },
+        "UiPathPackInputs": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+                "Code": {
+                    "S3Bucket": "uipath-contact-center",
+                    "S3Key": "UiPathContactCenterPackInputs.zip"
+                },
+                "Handler": "packInputs.handler",
+                "Runtime": "nodejs12.x",
+                "MemorySize": 256,
+                "Timeout": 30,
+                "Role": {
+                    "Fn::GetAtt": [
+                        "UiPathAllowLoggingRole",
+                        "Arn"
+                    ]
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "0ff23925-2dc6-4df1-90aa-22839618575d"
+                }
+            },
+            "DependsOn": [
+                "InvokeAuthenticate",
+                "UiPathAllowLoggingRole"
+            ]
+        },
+        "UiPathAllowS3WritePolicy": {
+            "Type": "AWS::IAM::Policy",
+            "Properties": {
+                "PolicyName": "UiPathAllowS3WritePolicy",
+                "PolicyDocument": {
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Action": [
+                                "s3:PutObject"
+                            ],
+                            "Resource": [
+                                {
+                                    "Fn::GetAtt": [
+                                        "UiPathS3ContactFlowsBucket",
+                                        "Arn"
+                                    ]
+                                },
+                                {
+                                    "Fn::Join": [
+                                        "",
+                                        [
+                                            {
+                                                "Fn::GetAtt": [
+                                                    "UiPathS3ContactFlowsBucket",
+                                                    "Arn"
+                                                ]
+                                            },
+                                            "/*"
+                                        ]
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "Roles": [
+                    {
+                        "Ref": "UiPathAllowS3WriteRole"
+                    }
+                ]
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "963f9244-5ed0-42ff-a750-916edd82443a"
+                }
+            },
+            "DependsOn": [
+                "UiPathAllowS3WriteRole"
+            ]
+        },
+        "UiPathAllowS3WriteRole": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Service": [
+                                    "lambda.amazonaws.com"
+                                ]
+                            },
+                            "Action": [
+                                "sts:AssumeRole"
+                            ]
+                        }
+                    ]
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "b76720dc-cc59-4020-b510-86a490cde578"
+                }
+            }
+        },
+        "UiPathCreateContactFlows": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+                "Code": {
+                    "S3Bucket": "uipath-contact-center",
+                    "S3Key": "UiPathContactCenterCreateContactFlows.zip"
+                },
+                "Handler": "createContactFlows.handler",
+                "Runtime": "nodejs12.x",
+                "MemorySize": 256,
+                "Timeout": 30,
+                "Role": {
+                    "Fn::GetAtt": [
+                        "UiPathAllowS3WriteRole",
+                        "Arn"
+                    ]
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "d203d625-ae0d-4f49-adf0-7148bd717a27"
+                }
+            },
+            "DependsOn": [
+                "InvokeAuthenticate",
+                "UiPathPackInputs",
+                "UiPathAllowS3WritePolicy",
+                "UiPathS3ContactFlowsBucket"
+            ]
+        },
+        "InvokeCreateContactFlows": {
+            "Type": "Custom::UiPathCreateContactFlows",
+            "Properties": {
+                "ServiceToken": {
+                    "Fn::GetAtt": [
+                        "UiPathCreateContactFlows",
+                        "Arn"
+                    ]
+                },
+                "bucketName": {
+                    "Ref": "UiPathS3ContactFlowsBucket"
+                },
+                "CreateInputParamsLambdaArn": {
+                    "Fn::GetAtt": [
+                        "UiPathPackInputs",
+                        "Arn"
+                    ]
+                },
+                "StartJobLambdaArn": {
+                    "Fn::GetAtt": [
+                        "UiPathStartJob",
+                        "Arn"
+                    ]
+                },
+                "QueryJobLambdaArn": {
+                    "Fn::GetAtt": [
+                        "UiPathQueryJob",
+                        "Arn"
+                    ]
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "99a36e59-a036-44f0-9678-b88f19422dff"
+                }
+            },
+            "DependsOn": [
+                "UiPathCreateContactFlows"
+            ]
+        },
+        "UiPathAllowLoggingRole": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Service": [
+                                    "lambda.amazonaws.com"
+                                ]
+                            },
+                            "Action": [
+                                "sts:AssumeRole"
+                            ]
+                        }
+                    ]
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "85e8dd97-e0f5-441d-80d7-3cfdd0e00ebb"
+                }
+            }
+        },
+        "UiPathQueryRelease": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+                "Code": {
+                    "S3Bucket": "uipath-contact-center",
+                    "S3Key": "UiPathContactCenterQueryRelease.zip"
+                },
+                "Handler": "queryRelease.handler",
+                "Runtime": "nodejs12.x",
+                "MemorySize": 256,
+                "Timeout": 30,
+                "Role": {
+                    "Fn::GetAtt": [
+                        "UiPathAllowLoggingAndSecretManagerRole",
+                        "Arn"
+                    ]
+                },
+                "Environment": {
+                    "Variables": {
+                        "orchestratorUrl": {
+                            "Ref": "OrchestratorUrl"
+                        },
+                        "accountName": {
+                            "Ref": "OrchestratorAccountLogicalName"
+                        },
+                        "tenantName": {
+                            "Ref": "OrchestratorTenantLogicalName"
+                        },
+                        "access_token_secret_id": {
+                            "Ref": "UiPathAccessToken"
+                        }
+                    }
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "5ba9aaae-5c8f-401d-84a4-fad16de63995"
+                }
+            },
+            "DependsOn": [
+                "UiPathAllowLoggingAndSecretManagerRole"
+            ]
+        },
+        "UiPathS3ContactFlowsBucket": {
+            "Type": "AWS::S3::Bucket",
+            "Properties": {
+                "BucketName": {
+                    "Fn::Join": [
+                        "-",
+                        [
+                            {
+                                "Ref": "S3BucketNameForContactFlows"
+                            },
+                            {
+                                "Fn::Select": [
+                                    0,
+                                    {
+                                        "Fn::Split": [
+                                            "-",
+                                            {
+                                                "Fn::Select": [
+                                                    2,
+                                                    {
+                                                        "Fn::Split": [
+                                                            "/",
+                                                            {
+                                                                "Ref": "AWS::StackId"
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    ]
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "23b47f8c-4b3f-485e-8e1f-721c61d84650"
+                }
+            },
+            "DeletionPolicy": "Retain"
+        },
+        "UiPathQueryReleasePermissions": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+                "FunctionName": {
+                    "Ref": "UiPathQueryRelease"
+                },
+                "Action": "lambda:InvokeFunction",
+                "Principal": "connect.amazonaws.com",
+                "SourceAccount": {
+                    "Ref": "AWS::AccountId"
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "b7e91d2e-2e6a-4b71-a42c-0e85c75f4f91"
+                }
+            },
+            "DependsOn": [
+                "UiPathQueryRelease"
+            ]
+        },
+        "UiPathQueryJobPermissions": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+                "FunctionName": {
+                    "Ref": "UiPathQueryJob"
+                },
+                "Action": "lambda:InvokeFunction",
+                "Principal": "connect.amazonaws.com",
+                "SourceAccount": {
+                    "Ref": "AWS::AccountId"
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "5371f920-2c60-48a0-8b76-b189df221ff1"
+                }
+            },
+            "DependsOn": [
+                "UiPathQueryJob"
+            ]
+        },
+        "UiPathStartJobPermissions": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+                "FunctionName": {
+                    "Ref": "UiPathStartJob"
+                },
+                "Action": "lambda:InvokeFunction",
+                "Principal": "connect.amazonaws.com",
+                "SourceAccount": {
+                    "Ref": "AWS::AccountId"
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "4d1133b6-ab4d-4d10-9722-ef3e7d9cf391"
+                }
+            },
+            "DependsOn": [
+                "UiPathStartJob"
+            ]
+        }
+    },
+    "Outputs": {
+        "S3BucketForContactFlows": {
+            "Description": "S3 bucket URL where the contact flows were created.",
+            "Value": {
+                "Fn::Join": [
+                    "",
+                    [
+                        "https://s3.console.aws.amazon.com/s3/buckets/",
+                        {
+                            "Ref": "UiPathS3ContactFlowsBucket"
+                        }
+                    ]
+                ]
+            }
+        }
+    }
+}

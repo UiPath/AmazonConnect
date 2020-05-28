@@ -149,7 +149,7 @@
       "parameters": [
         {
           "name": "FunctionArn",
-          "value": "arn:aws:lambda:us-west-2:456365885395:function:createInpParams",
+          "value": "##CREATE_INPUT_PARAMS_LAMBDA_ARN##",
           "namespace": null
         },
         {
@@ -322,7 +322,7 @@
       "parameters": [
         {
           "name": "FunctionArn",
-          "value": "arn:aws:lambda:us-west-2:456365885395:function:UiPathOrchestratorRunJob",
+          "value": "##START_JOB_LAMBDA_ARN##",
           "namespace": null
         },
         {
@@ -331,38 +331,14 @@
         },
         {
           "name": "Parameter",
-          "key": "accountName",
-          "value": "jmarks",
-          "namespace": null
-        },
-        {
-          "name": "Parameter",
-          "key": "tenantName",
-          "value": "jmarks",
-          "namespace": null
-        },
-        {
-          "name": "Parameter",
-          "key": "clientId",
-          "value": "CLIENTIDGOESHERE",
-          "namespace": null
-        },
-        {
-          "name": "Parameter",
-          "key": "userKey",
-          "value": "USERKEYGOESHERE",
-          "namespace": null
-        },
-        {
-          "name": "Parameter",
-          "key": "organizationUnitId",
-          "value": "60193",
-          "namespace": null
-        },
-        {
-          "name": "Parameter",
           "key": "releaseKey",
-          "value": "f1811672-f735-48b0-9b6f-7746a9998bc4",
+          "value": "YOUR_PROCESS_RELEASE_KEY_HERE",
+          "namespace": null
+        },
+        {
+          "name": "Parameter",
+          "key": "folderId",
+          "value": "YOUR_FOLDER_ID_HERE",
           "namespace": null
         },
         {
@@ -378,13 +354,9 @@
           "y": 21
         },
         "dynamicMetadata": {
-          "accountName": false,
-          "tenantName": false,
-          "clientId": false,
-          "userKey": false,
-          "organizationUnitId": false,
           "releaseKey": false,
-          "inputArguments": true
+          "folderId": false,
+		      "inputArguments": false
         },
         "useDynamic": false
       },

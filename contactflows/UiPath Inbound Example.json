@@ -22,7 +22,7 @@
       ],
       "metadata": {
         "position": {
-          "x": 182,
+          "x": 158,
           "y": 22
         },
         "useDynamic": false
@@ -50,74 +50,11 @@
       ],
       "metadata": {
         "position": {
-          "x": 1042,
+          "x": 1018,
           "y": 162
         },
         "useDynamic": false
       }
-    },
-    {
-      "id": "16a269f8-8eb3-40de-b85d-f50c507a817f",
-      "type": "InvokeExternalResource",
-      "branches": [
-        {
-          "condition": "Success",
-          "transition": "06c3910c-6b4f-48b8-9998-55ab1d8b96c1"
-        },
-        {
-          "condition": "Error",
-          "transition": "7fc97638-dd77-401e-a979-29592c346dd2"
-        }
-      ],
-      "parameters": [
-        {
-          "name": "FunctionArn",
-          "value": "arn:aws:lambda:us-west-2:456365885395:function:UiPathOrchestratorQueryJob",
-          "namespace": null
-        },
-        {
-          "name": "TimeLimit",
-          "value": "7"
-        },
-        {
-          "name": "Parameter",
-          "key": "jobKey",
-          "value": "JobKey",
-          "namespace": "External"
-        },
-        {
-          "name": "Parameter",
-          "key": "accountName",
-          "value": "jmarks",
-          "namespace": null
-        },
-        {
-          "name": "Parameter",
-          "key": "tenantName",
-          "value": "jmarks",
-          "namespace": null
-        },
-        {
-          "name": "Parameter",
-          "key": "organizationUnitId",
-          "value": "60193",
-          "namespace": null
-        }
-      ],
-      "metadata": {
-        "position": {
-          "x": 382,
-          "y": 442
-        },
-        "dynamicMetadata": {
-          "jobKey": true,
-          "accountName": false,
-          "tenantName": false,
-          "organizationUnitId": false
-        },
-        "useDynamic": false
-      },
-      "target": "Lambda"
     },
     {
       "id": "7fc97638-dd77-401e-a979-29592c346dd2",
@@ -141,11 +78,60 @@
       ],
       "metadata": {
         "position": {
-          "x": 885,
+          "x": 861,
           "y": 775
         },
         "useDynamic": false
       }
+    },
+    {
+      "id": "16a269f8-8eb3-40de-b85d-f50c507a817f",
+      "type": "InvokeExternalResource",
+      "branches": [
+        {
+          "condition": "Success",
+          "transition": "06c3910c-6b4f-48b8-9998-55ab1d8b96c1"
+        },
+        {
+          "condition": "Error",
+          "transition": "7fc97638-dd77-401e-a979-29592c346dd2"
+        }
+      ],
+      "parameters": [
+        {
+          "name": "FunctionArn",
+          "value": "##QUERY_JOB_LAMBDA_ARN##",
+          "namespace": null
+        },
+        {
+          "name": "TimeLimit",
+          "value": "7"
+        },
+        {
+          "name": "Parameter",
+          "key": "jobKey",
+          "value": "jobKey",
+          "namespace": "External"
+        },
+        {
+          "name": "Parameter",
+          "key": "folderId",
+          "value": "YOUR_FOLDER_ID_HERE",
+          "namespace": null
+        }
+      ],
+      "metadata": {
+        "position": {
+          "x": 358,
+          "y": 442
+        },
+        "dynamicMetadata": {
+          "jobKey": true,
+          "folderId": false
+        },
+        "useDynamic": false
+      },
+      "target": "Lambda"
     },
     {
       "id": "14b62da1-1f99-427b-99e9-a09b2862866a",
@@ -163,14 +149,14 @@
       "parameters": [
         {
           "name": "Attribute",
-          "value": "AccessToken",
-          "key": "AccessToken",
+          "value": "jobKey",
+          "key": "jobKey",
           "namespace": "External"
         }
       ],
       "metadata": {
         "position": {
-          "x": 740,
+          "x": 716,
           "y": 60
         }
       }
@@ -197,7 +183,7 @@
       ],
       "metadata": {
         "position": {
-          "x": 745,
+          "x": 721,
           "y": 253
         },
         "useDynamic": false
@@ -220,7 +206,7 @@
       ],
       "metadata": {
         "position": {
-          "x": 192,
+          "x": 168,
           "y": 198
         }
       }
@@ -241,7 +227,7 @@
       "parameters": [
         {
           "name": "FunctionArn",
-          "value": "arn:aws:lambda:us-west-2:456365885395:function:UiPathOrchestratorRunJob",
+          "value": "##START_JOB_LAMBDA_ARN##",
           "namespace": null
         },
         {
@@ -250,53 +236,32 @@
         },
         {
           "name": "Parameter",
-          "key": "accountName",
-          "value": "jmarks",
-          "namespace": null
-        },
-        {
-          "name": "Parameter",
-          "key": "tenantName",
-          "value": "jmarks",
-          "namespace": null
-        },
-        {
-          "name": "Parameter",
           "key": "releaseKey",
-          "value": "c796e3b0-5aff-471c-b762-9ac05226938f",
+          "value": "YOUR_RELEASE_KEY_HERE",
           "namespace": null
         },
         {
           "name": "Parameter",
-          "key": "organizationUnitId",
-          "value": "60193",
+          "key": "folderId",
+          "value": "YOUR_FOLDER_ID_HERE",
           "namespace": null
         },
-        {
+		{
           "name": "Parameter",
-          "key": "clientId",
-          "value": "CLIENTIDGOESHERE",
-          "namespace": null
-        },
-        {
-          "name": "Parameter",
-          "key": "userKey",
-          "value": "USERKEYGOESHERE",
+          "key": "inputArguments",
+          "value": "{ \"expectedDate\": \"5/01/2020\", \"expectedAmount\": \"123\" }",
           "namespace": null
         }
       ],
       "metadata": {
         "position": {
-          "x": 446,
+          "x": 420,
           "y": 81
         },
         "dynamicMetadata": {
-          "accountName": false,
-          "tenantName": false,
           "releaseKey": false,
-          "organizationUnitId": false,
-          "clientId": false,
-          "userKey": false
+          "folderId": false,
+		      "inputArguments": false
         },
         "useDynamic": false
       },
@@ -323,7 +288,7 @@
       ],
       "metadata": {
         "position": {
-          "x": 79,
+          "x": 55,
           "y": 423
         },
         "useDynamic": false
@@ -351,7 +316,7 @@
       ],
       "metadata": {
         "position": {
-          "x": 876,
+          "x": 852,
           "y": 612
         },
         "useDynamic": false
@@ -378,7 +343,7 @@
       ],
       "metadata": {
         "position": {
-          "x": 1113,
+          "x": 1089,
           "y": 608
         },
         "useDynamic": false,
@@ -395,7 +360,7 @@
       "parameters": [],
       "metadata": {
         "position": {
-          "x": 1387,
+          "x": 1363,
           "y": 369
         }
       }
@@ -433,12 +398,12 @@
       ],
       "metadata": {
         "position": {
-          "x": 624,
+          "x": 600,
           "y": 440
         },
         "conditionMetadata": [
           {
-            "id": "b9c102bc-d6ad-4ad3-980e-86ddecd56011",
+            "id": "1adf901c-94bd-4cfe-bc91-8be1955f4f84",
             "operator": {
               "name": "Equals",
               "value": "Equals",
@@ -447,7 +412,7 @@
             "value": "Successful"
           },
           {
-            "id": "6496f119-6d69-457c-9ad0-12a829c6e0c7",
+            "id": "b5988f1b-6b16-4e11-8bdd-ee99473a663f",
             "operator": {
               "name": "Equals",
               "value": "Equals",
@@ -480,8 +445,8 @@
       ],
       "metadata": {
         "position": {
-          "x": 872,
-          "y": 443
+          "x": 848,
+          "y": 442
         },
         "useDynamic": false
       }
@@ -492,7 +457,7 @@
   "start": "4d36a741-bc87-4035-b3fa-9c8390e687ac",
   "metadata": {
     "entryPointPosition": {
-      "x": 39,
+      "x": 15,
       "y": 15
     },
     "snapToGrid": false,
@@ -500,6 +465,6 @@
     "description": "Leverages UiPath unattended automation to query information about the user from back-end systems.",
     "type": "contactFlow",
     "status": "published",
-    "hash": "fefa923d1ddc97609492c66d61d9231ee7ef8843c3cedef061cdff011d290a97"
+    "hash": "745e38cbedf087897e42412d45d940316850921c7244a31ed0195fb871c23c46"
   }
 }
