@@ -11,7 +11,7 @@ async function startJob(startJobUrl, releaseKey, jobInputArguments, tenantName, 
     switch (folderType) {
         case FOLDER_TYPE_CLASSIC: Strategy = 'JobsCount'; break;
         case FOLDER_TYPE_MODERN: Strategy = 'ModernJobsCount'; break;
-        default: 
+        default:
             throw new Error(`Invalid value for 'folderType'. Should be either 'Classic' OR 'Modern'.`);
     }
 
@@ -47,10 +47,10 @@ async function startJob(startJobUrl, releaseKey, jobInputArguments, tenantName, 
                     body = JSON.parse(body);
                 }
 
-                if(res.statusCode < 200 || res.statusCode >= 300) {
+                if (res.statusCode < 200 || res.statusCode >= 300) {
                     reject(`HTTP call to '${startJobUrl}' failed with statusCode ${res.statusCode}`);
                 }
-                
+
                 resolve({ data: body, duration: (new Date() - start), statusCode: res.statusCode });
             });
         });
@@ -82,12 +82,12 @@ exports.handler = async (event, context, callback) => {
     let startJobUrl = `${orchestratorUrl}/${accountName}/${tenantName}/odata/Jobs/UiPath.Server.Configuration.OData.StartJobs`;
     let jobInputArguments;
 
-    if(event.Details.Parameters.inputArguments) {
+    if (event.Details.Parameters.inputArguments) {
         let jobArguments = JSON.parse(event.Details.Parameters.inputArguments);
         if (!jobArguments) {
             throw new Error('inputArguments not a valid JSON');
         }
-        
+
         jobInputArguments = JSON.stringify(jobArguments || {});
     }
 
@@ -96,13 +96,18 @@ exports.handler = async (event, context, callback) => {
         const access_token = await getSecret(process.env.access_token_secret_id);
         job = await startJob(startJobUrl, releaseKey, jobInputArguments, tenantName, folderId, folderType, access_token);
     } catch (err) {
-        appInsightsClient.trackException({ exception: err, measurements: {
-            source: SOURCE,
-            lambdaName,
-            contactId,
-            accountName,
-            tenantName
-        } });
+        appInsightsClient.trackException({
+            exception: err, 
+            measurements: {
+                source: SOURCE,
+                lambdaName,
+                contactId,
+                accountName,
+                tenantName
+            }
+        });
+
+        throw err;
     }
 
     if (!job) {

@@ -8,10 +8,10 @@ const https = require('https')
 const { getSecret, updateSecret } = require('./secretManager.js');
 
 function getReason(err) {
-  if (err)
-    return err.message;
-  else
-    return '';
+	if (err)
+		return err.message;
+	else
+		return '';
 }
 
 async function sendResponse(event, context, status, err) {
@@ -20,7 +20,7 @@ async function sendResponse(event, context, status, err) {
 		if (!event.ResponseURL || !event.StackId || !event.RequestId || !event.LogicalResourceId) {
 			return;
 		}
-		
+
 		var responseBody = {
 			StackId: event.StackId,
 			RequestId: event.RequestId,
@@ -44,22 +44,22 @@ async function sendResponse(event, context, status, err) {
 			}
 		};
 
-		var request = https.request(options, function(response) {
+		var request = https.request(options, function (response) {
 			console.log("STATUS: " + response.statusCode);
 			console.log("HEADERS: " + JSON.stringify(response.headers));
 			context.done(null, null);
 		});
 
-		request.on("error", function(error) {
+		request.on("error", function (error) {
 			console.log("sendResponse Error:\n", error);
 			context.done(error);
 		});
 
-		request.on("end", function() {
+		request.on("end", function () {
 			console.log("end");
 			resolve();
 		});
-		
+
 		request.write(json);
 		request.end();
 	});
@@ -67,57 +67,61 @@ async function sendResponse(event, context, status, err) {
 
 async function getNewAccessToken(authUrl, client_id, user_key) {
 	let apiAccessAuthOptions = url.parse(authUrl);
-    let apiAccessAuthBody = JSON.stringify({ 
-        grant_type: 'refresh_token',
-        client_id, 
-        refresh_token: user_key,
-    });
+	let apiAccessAuthBody = JSON.stringify({
+		grant_type: 'refresh_token',
+		client_id,
+		refresh_token: user_key,
+	});
 
-    apiAccessAuthOptions.method = 'POST';
-    apiAccessAuthOptions.headers = {
-        'Content-Type': 'application/json',
-        'Content-Length': apiAccessAuthBody.length
-    };
+	apiAccessAuthOptions.method = 'POST';
+	apiAccessAuthOptions.headers = {
+		'Content-Type': 'application/json',
+		'Content-Length': apiAccessAuthBody.length
+	};
 
 	return new Promise((resolve, reject) => {
-        let apiAccessAuthReq = https.request(apiAccessAuthOptions, function (res) {
-            res.setEncoding('utf8');
-            res.on('data', function (res) {
-                let tokensObj = JSON.parse(res);
-                if(!tokensObj.access_token) {
+		let apiAccessAuthReq = https.request(apiAccessAuthOptions, function (res) {
+			res.setEncoding('utf8');
+			res.on('data', function (res) {
+				let tokensObj = JSON.parse(res);
+				if (!tokensObj.access_token) {
 					throw 'access_token not found';
-                }
-                
-                resolve(tokensObj.access_token);
-            });
-        });
-    
-        apiAccessAuthReq.on('error', reject);
-        apiAccessAuthReq.write(apiAccessAuthBody)
-        apiAccessAuthReq.end();
-    });
+				}
+
+				resolve(tokensObj.access_token);
+			});
+		});
+
+		apiAccessAuthReq.on('error', reject);
+		apiAccessAuthReq.write(apiAccessAuthBody)
+		apiAccessAuthReq.end();
+	});
 }
 
 exports.handler = async (event, context) => {
 	let client_id;
 	let user_key;
-	
+
 	try {
 		client_id = await getSecret(process.env.api_access_key_client_id_secret_id);
 		user_key = await getSecret(process.env.api_access_key_user_key_secret_id);
 	} catch (err) {
 		await sendResponse(event, context, 'FAILED', err);
+		throw err;
 	}
-    
+
 	try {
 		const access_token = await getNewAccessToken(process.env.api_access_auth_url, client_id, user_key);
 		await updateSecret(process.env.access_token_secret_id, access_token);
 		await sendResponse(event, context, 'SUCCESS');
 	} catch (err) {
 		await sendResponse(event, context, 'FAILED', err);
-		appInsightsClient.trackException({exception: err, measurements: {
-            accountName,
-            tenantName
-        }});
+		appInsightsClient.trackException({
+			exception: err, measurements: {
+				accountName,
+				tenantName
+			}
+		});
+		throw err;
 	}
 };

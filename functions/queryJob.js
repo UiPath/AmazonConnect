@@ -14,7 +14,7 @@ async function getJob(jobUrl, tenantName, folderId, access_token) {
             'X-UIPATH-TenantName': tenantName,
             'X-UIPATH-OrganizationUnitId': folderId
         };
-        
+
         const start = new Date();
         const req = https.request(getJobStatusOptions, (res) => {
             let body = '';
@@ -25,30 +25,30 @@ async function getJob(jobUrl, tenantName, folderId, access_token) {
                 if (res.headers['content-type'].startsWith('application/json')) {
                     body = JSON.parse(body);
                 }
-                
-                if(res.statusCode < 200 || res.statusCode >= 300) {
+
+                if (res.statusCode < 200 || res.statusCode >= 300) {
                     reject(`HTTP call to '${jobUrl}' failed with statusCode ${res.statusCode}`);
                 }
-                
+
                 resolve({ data: body, duration: (new Date() - start), statusCode: res.statusCode });
             });
         });
-        
+
         req.on('error', reject);
         req.end();
     });
 }
 
 function flatten(data, response = {}, flatKey = "") {
-  for (const [key, value] of Object.entries(data)) {
-    const newFlatKey = `${flatKey}${key}`;
-    if (typeof value === "object" && value !== null && Object.keys(value).length > 0) {
-      flatten(value, response, `${newFlatKey}`);
-    } else {
-        response[newFlatKey] = value;
+    for (const [key, value] of Object.entries(data)) {
+        const newFlatKey = `${flatKey}${key}`;
+        if (typeof value === "object" && value !== null && Object.keys(value).length > 0) {
+            flatten(value, response, `${newFlatKey}`);
+        } else {
+            response[newFlatKey] = value;
+        }
     }
-  }
-  return response;
+    return response;
 };
 
 /**
@@ -76,21 +76,25 @@ exports.handler = async (event, context, callback) => {
         const access_token = await getSecret(process.env.access_token_secret_id);
         queryJob = await getJob(queryJobUrl, tenantName, folderId, access_token);
     } catch (err) {
-        appInsightsClient.trackException({exception: err, measurements: {
-            source: SOURCE,
-            lambdaName,
-            contactId,
-            accountName,
-            tenantName
-        }});
+        appInsightsClient.trackException({
+            exception: err,
+            measurements: {
+                source: SOURCE,
+                lambdaName,
+                contactId,
+                accountName,
+                tenantName
+            }
+        });
+        throw err;
     }
 
     if (!queryJob) {
         return null
     }
-    
+
     appInsightsClient.trackEvent({
-        name: "QueryJob", 
+        name: "QueryJob",
         properties: {
             source: SOURCE,
             lambdaName,
@@ -107,8 +111,8 @@ exports.handler = async (event, context, callback) => {
         OutputArguments: JSON.parse(queryJob.data.OutputArguments),
         jobKey
     };
-    
+
     output = flatten(output);
-    
+
     return output;
 };

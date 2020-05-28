@@ -8,7 +8,7 @@ function createContactFlow(properties, contactFlow) {
     var contactFlowBody = JSON.stringify(require(contactFlow));
 
     if (!properties.bucketName)
-        throw("Bucket name not specified");
+        throw ("Bucket name not specified");
 
     var bucketName = properties.bucketName;
 
@@ -59,51 +59,51 @@ function getReason(err) {
 
 
 function sendResponse(event, context, status, err) {
-	// only send response when called via CFT
-	if (!event.ResponseURL || !event.StackId || !event.RequestId || !event.LogicalResourceId) {
-		return;
-	}
-	
-	var responseBody = {
-		StackId: event.StackId,
-		RequestId: event.RequestId,
-		LogicalResourceId: event.LogicalResourceId,
-		PhysicalResourceId: context.logStreamName,
-		Status: status,
-		Reason: getReason(err) + " See details in CloudWatch Log: " + context.logStreamName,
-	};
+    // only send response when called via CFT
+    if (!event.ResponseURL || !event.StackId || !event.RequestId || !event.LogicalResourceId) {
+        return;
+    }
 
-	console.log("RESPONSE:\n", responseBody);
-	var json = JSON.stringify(responseBody);
-	var parsedUrl = url.parse(event.ResponseURL);
-	var options = {
-		hostname: parsedUrl.hostname,
-		port: 443,
-		path: parsedUrl.path,
-		method: "PUT",
-		headers: {
-			"content-type": "",
-			"content-length": json.length
-		}
-	};
+    var responseBody = {
+        StackId: event.StackId,
+        RequestId: event.RequestId,
+        LogicalResourceId: event.LogicalResourceId,
+        PhysicalResourceId: context.logStreamName,
+        Status: status,
+        Reason: getReason(err) + " See details in CloudWatch Log: " + context.logStreamName,
+    };
 
-	var request = https.request(options, function(response) {
-		console.log("STATUS: " + response.statusCode);
-		console.log("HEADERS: " + JSON.stringify(response.headers));
-		context.done(null, null);
-	});
+    console.log("RESPONSE:\n", responseBody);
+    var json = JSON.stringify(responseBody);
+    var parsedUrl = url.parse(event.ResponseURL);
+    var options = {
+        hostname: parsedUrl.hostname,
+        port: 443,
+        path: parsedUrl.path,
+        method: "PUT",
+        headers: {
+            "content-type": "",
+            "content-length": json.length
+        }
+    };
 
-	request.on("error", function(error) {
-		console.log("sendResponse Error:\n", error);
-		context.done(error);
-	});
+    var request = https.request(options, function (response) {
+        console.log("STATUS: " + response.statusCode);
+        console.log("HEADERS: " + JSON.stringify(response.headers));
+        context.done(null, null);
+    });
 
-	request.on("end", function() {
-		console.log("end");
-	});
-	
-	request.write(json);
-	request.end();
+    request.on("error", function (error) {
+        console.log("sendResponse Error:\n", error);
+        context.done(error);
+    });
+
+    request.on("end", function () {
+        console.log("end");
+    });
+
+    request.write(json);
+    request.end();
 }
 
 module.exports = createContactFlow;

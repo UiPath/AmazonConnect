@@ -10,7 +10,7 @@ module.exports = function () {
         .setAutoCollectDependencies(false)
         .setAutoDependencyCorrelation(false)
         .start();
-    
+
     const client = appInsights.defaultClient;
     client.config.maxBatchIntervalMs = 0
     return client;
