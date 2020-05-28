@@ -30,9 +30,6 @@
         "S3BucketNameForContactFlows": {
             "Type": "String",
             "Description": "Desired name for the S3 bucket we will create and place sample contact flows in."
-        },
-        "AppInsightsKey": {
-            "Type": "String"
         }
     },
     "Metadata": {
@@ -65,11 +62,6 @@
                     "Parameters": [
                         "S3BucketNameForContactFlows"
                     ]
-                },
-                {
-                    "Parameters": [
-                        "AppInsightsKey"
-                    ]
                 }
             ],
             "ParameterLabels": {
@@ -93,9 +85,6 @@
                 },
                 "S3BucketNameForContactFlows": {
                     "default": "S3 Bucket for saving Contact Flows"
-                },
-                "AppInsightsKey": {
-                    "default": "Application Insights Key"
                 }
             }
         },
@@ -528,9 +517,6 @@
                         },
                         "access_token_secret_id": {
                             "Ref": "UiPathAccessToken"
-                        },
-                        "appInsightsKey": {
-                            "Ref": "AppInsightsKey"
                         }
                     }
                 }
@@ -574,9 +560,6 @@
                         },
                         "access_token_secret_id": {
                             "Ref": "UiPathAccessToken"
-                        },
-                        "appInsightsKey": {
-                            "Ref": "AppInsightsKey"
                         }
                     }
                 }
@@ -620,9 +603,6 @@
                         },
                         "access_token_secret_id": {
                             "Ref": "UiPathAccessToken"
-                        },
-                        "appInsightsKey": {
-                            "Ref": "AppInsightsKey"
                         }
                     }
                 }
@@ -1023,9 +1003,6 @@
                         },
                         "access_token_secret_id": {
                             "Ref": "UiPathAccessToken"
-                        },
-                        "appInsightsKey": {
-                            "Ref": "AppInsightsKey"
                         }
                     }
                 }

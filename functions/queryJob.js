@@ -58,7 +58,7 @@ function flatten(data, response = {}, flatKey = "") {
  * Will succeed with the response body.
  */
 exports.handler = async (event, context, callback) => {
-    const appInsightsClient = initAppInsights(process.env.appInsightsKey);
+    const appInsightsClient = initAppInsights();
 
     let orchestratorUrl = process.env.orchestratorUrl;
     let accountName = process.env.accountName;

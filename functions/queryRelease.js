@@ -46,7 +46,7 @@ async function getRelease(releaseUrl, tenantName, folderId, access_token) {
  * Will succeed with the response body.
  */
 exports.handler = async (event, context, callback) => {
-    const appInsightsClient = initAppInsights(process.env.appInsightsKey);
+    const appInsightsClient = initAppInsights();
     
     let orchestratorUrl = process.env.orchestratorUrl;
     let accountName = process.env.accountName;

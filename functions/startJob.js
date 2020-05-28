@@ -4,6 +4,7 @@ const initAppInsights = require('./appInsights.js');
 const { getSecret } = require('./secretManager.js');
 
 const FOLDER_TYPE_CLASSIC = 'classic';
+const FOLDER_TYPE_MODERN = 'modern';
 
 async function startJob(startJobUrl, releaseKey, jobInputArguments, tenantName, folderId, folderType, access_token) {
     let Strategy;
@@ -70,7 +71,7 @@ async function startJob(startJobUrl, releaseKey, jobInputArguments, tenantName, 
  * Will succeed with the response body.
  */
 exports.handler = async (event, context, callback) => {
-    const appInsightsClient = initAppInsights(process.env.appInsightsKey);
+    const appInsightsClient = initAppInsights();
 
     let orchestratorUrl = process.env.orchestratorUrl;
     let accountName = process.env.accountName;
