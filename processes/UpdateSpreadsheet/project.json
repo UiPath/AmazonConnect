@@ -12,7 +12,7 @@
   "webServices": [],
   "schemaVersion": "4.0",
   "studioVersion": "20.3.0.84",
-  "projectVersion": "1.0.3",
+  "projectVersion": "1.0.4",
   "runtimeOptions": {
     "autoDispose": false,
     "isPausable": true,
@@ -31,7 +31,7 @@
       "includeOriginalXaml": false,
       "privateWorkflows": []
     },
-    "fileInfoCollection": []
+    "fileInfos": []
   },
   "arguments": {
     "input": [
