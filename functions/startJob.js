@@ -2,9 +2,7 @@ const https = require('https');
 const url = require('url');
 const initAppInsights = require('./appInsights.js');
 const { getSecret } = require('./secretManager.js');
-
-const FOLDER_TYPE_CLASSIC = 'classic';
-const FOLDER_TYPE_MODERN = 'modern';
+const { SOURCE, FOLDER_TYPE_CLASSIC, FOLDER_TYPE_MODERN } = require('./constants.js');
 
 async function startJob(startJobUrl, releaseKey, jobInputArguments, tenantName, folderId, folderType, access_token) {
     let Strategy;
@@ -76,6 +74,8 @@ exports.handler = async (event, context, callback) => {
     let orchestratorUrl = process.env.orchestratorUrl;
     let accountName = process.env.accountName;
     let tenantName = process.env.tenantName;
+    let lambdaName = process.env.AWS_LAMBDA_FUNCTION_NAME;
+    let contactId = (event.Details.ContactData || {}).ContactId;
     let releaseKey = event.Details.Parameters.releaseKey;
     let folderId = event.Details.Parameters.folderId;
     let folderType = event.Details.Parameters.folderType || FOLDER_TYPE_CLASSIC;
@@ -96,7 +96,13 @@ exports.handler = async (event, context, callback) => {
         const access_token = await getSecret(process.env.access_token_secret_id);
         job = await startJob(startJobUrl, releaseKey, jobInputArguments, tenantName, folderId, folderType, access_token);
     } catch (err) {
-        appInsightsClient.trackException({ exception: err });
+        appInsightsClient.trackException({ exception: err, measurements: {
+            source: SOURCE,
+            lambdaName,
+            contactId,
+            accountName,
+            tenantName
+        } });
     }
 
     if (!job) {
@@ -106,6 +112,9 @@ exports.handler = async (event, context, callback) => {
     appInsightsClient.trackEvent({
         name: "StartJob",
         properties: {
+            source: SOURCE,
+            lambdaName,
+            contactId,
             accountName,
             tenantName,
             responseTime: job.duration,

@@ -47,15 +47,15 @@ jobs:
 
     - name: Build QueryJob
       working-directory: ./functions
-      run: zip -qq -r ./UiPathContactCenterQueryJob.zip ./queryJob.js ./appInsights.js ./secretManager.js ./node_modules
+      run: zip -qq -r ./UiPathContactCenterQueryJob.zip ./queryJob.js ./constants.js ./appInsights.js ./secretManager.js ./node_modules
 
     - name: Build QueryRelease
       working-directory: ./functions
-      run: zip -qq -r ./UiPathContactCenterQueryRelease.zip ./queryRelease.js ./appInsights.js ./secretManager.js ./node_modules
+      run: zip -qq -r ./UiPathContactCenterQueryRelease.zip ./queryRelease.js ./constants.js ./appInsights.js ./secretManager.js ./node_modules
 
     - name: Build StartJob
       working-directory: ./functions
-      run: zip -qq -r ./UiPathContactCenterStartJob.zip ./startJob.js ./appInsights.js ./secretManager.js ./node_modules
+      run: zip -qq -r ./UiPathContactCenterStartJob.zip ./startJob.js ./constants.js ./appInsights.js ./secretManager.js ./node_modules
 
     - name: Add CFT to artifact
       uses: actions/upload-artifact@v2

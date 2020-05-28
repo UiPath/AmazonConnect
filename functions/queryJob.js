@@ -2,6 +2,7 @@ const https = require('https');
 const url = require('url');
 const initAppInsights = require('./appInsights.js');
 const { getSecret } = require('./secretManager.js');
+const { SOURCE } = require('./constants.js');
 
 async function getJob(jobUrl, tenantName, folderId, access_token) {
     return new Promise((resolve, reject) => {
@@ -63,6 +64,8 @@ exports.handler = async (event, context, callback) => {
     let orchestratorUrl = process.env.orchestratorUrl;
     let accountName = process.env.accountName;
     let tenantName = process.env.tenantName;
+    let lambdaName = process.env.AWS_LAMBDA_FUNCTION_NAME;
+    let contactId = (event.Details.ContactData || {}).ContactId;
     let jobKey = event.Details.Parameters.jobKey;
     let folderId = event.Details.Parameters.folderId;
 
@@ -74,6 +77,9 @@ exports.handler = async (event, context, callback) => {
         queryJob = await getJob(queryJobUrl, tenantName, folderId, access_token);
     } catch (err) {
         appInsightsClient.trackException({exception: err, measurements: {
+            source: SOURCE,
+            lambdaName,
+            contactId,
             accountName,
             tenantName
         }});
@@ -86,6 +92,9 @@ exports.handler = async (event, context, callback) => {
     appInsightsClient.trackEvent({
         name: "QueryJob", 
         properties: {
+            source: SOURCE,
+            lambdaName,
+            contactId,
             accountName,
             tenantName,
             responseTime: queryJob.duration,

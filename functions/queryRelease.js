@@ -2,6 +2,7 @@ const https = require('https');
 const url = require('url');
 const initAppInsights = require('./appInsights.js');
 const { getSecret } = require('./secretManager.js');
+const { SOURCE } = require('./constants.js');
 
 async function getRelease(releaseUrl, tenantName, folderId, access_token) {
     return new Promise((resolve, reject) => {
@@ -51,6 +52,8 @@ exports.handler = async (event, context, callback) => {
     let orchestratorUrl = process.env.orchestratorUrl;
     let accountName = process.env.accountName;
     let tenantName = process.env.tenantName;
+    let lambdaName = process.env.AWS_LAMBDA_FUNCTION_NAME;
+    let contactId = (event.Details.ContactData || {}).ContactId;
     let processName = event.Details.Parameters.processName;
     let folderId = event.Details.Parameters.folderId;
     let encodedProcessName = encodeURI(processName);
@@ -62,6 +65,9 @@ exports.handler = async (event, context, callback) => {
         release = await getRelease(releaseUrl, tenantName, folderId, access_token);
     } catch (err) {
         appInsightsClient.trackException({exception: err, measurements: {
+            source: SOURCE,
+            lambdaName,
+            contactId,
             accountName,
             tenantName
         }});
@@ -74,6 +80,9 @@ exports.handler = async (event, context, callback) => {
     appInsightsClient.trackEvent({
         name: "QueryRelease", 
         properties: {
+            source: SOURCE,
+            lambdaName,
+            contactId,
             accountName,
             tenantName,
             responseTime: release.duration,
