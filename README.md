@@ -64,10 +64,9 @@ An attended automation queries an Excel spreadsheet for applicants that are miss
 ### Step 3. Run the CloudFormation Template
 To make things easy to deploy, we've hosted the default template in UiPath's S3 bucket so all you have to do is create a new stack with it.  Alternatively, you can customize the [template in this repo](./aws-cft/contact-center-cft).
 
-1. Open the [AWS CloudFormation Stack creator](https://us-west-2.console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/create/template)
+1. Open the [AWS CloudFormation Stack creator](https://us-west-2.console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/quickcreate?templateURL=https://uipath-contactcenter.s3-us-west-2.amazonaws.com/AmazonConnect/IVR/contact-center-cft)
 2. Set the region to the same region as your Amazon Connect instance.  *NOTE: Amazon Connect only supports using lambda functions in the same region as your contact center.*
-3. Point to the UiPath hosted S3 URL: **[https://uipath-contact-center.s3-us-west-2.amazonaws.com/contact-center-cft](https://uipath-contact-center.s3-us-west-2.amazonaws.com/contact-center-cft)** and click **Next**.
-4. Fill in the form with the pertinent data
+3. Fill in the form with the pertinent data
   - Stack Name - provide a name for your stack
     - EXAMPLE: UiPath-AmazonConnect
   - User Key - provide the UserKey name from step 1.6 above
@@ -80,10 +79,10 @@ To make things easy to deploy, we've hosted the default template in UiPath's S3 
     - EXAMPLE: 8DEv1AMNXczW3y4U15LL3jYf62jK93n5
   - S3 Bucket - *NOTE: this must be all lowercase*
     - EXAMPLE: uipath-amazonconnect-contactflows
-  5. Continue pressing **Next** for 2 screens.
-  6. Check the **I acknowledge...** checkbox and finally click **Create Stack**.  It should take less than 2 minutes for all the resources to be created.
-  7. When the stack creation is complete, click on the **Outputs** tab and click on the **S3BucketForContactFlows** link.
-  8. Download the two sample contact flows.  These will be uploaded to Amazon Connect in the next step.
+ 4. Continue pressing **Next** for 2 screens.
+ 5. Check the **I acknowledge...** checkbox and finally click **Create Stack**.  It should take less than 2 minutes for all the resources to be created.
+ 6. When the stack creation is complete, click on the **Outputs** tab and click on the **S3BucketForContactFlows** link.
+ 7. Download the two sample contact flows.  These will be uploaded to Amazon Connect in the next step.
 
 Here's an example of the completed form:
 ![Sample CloudFormation stack details](./.github/Stack.png "Sample CloudFormation stack details")
