@@ -491,8 +491,8 @@
             "Type": "AWS::Lambda::Function",
             "Properties": {
                 "Code": {
-                    "S3Bucket": "uipath-contact-center",
-                    "S3Key": "UiPathContactCenterAuthenticate.zip"
+                    "S3Bucket": "uipath-contactcenter",
+                    "S3Key": "AmazonConnect/IVR/UiPathContactCenterAuthenticate.zip"
                 },
                 "Handler": "authenticate.handler",
                 "Runtime": "nodejs12.x",
@@ -534,8 +534,8 @@
             "Type": "AWS::Lambda::Function",
             "Properties": {
                 "Code": {
-                    "S3Bucket": "uipath-contact-center",
-                    "S3Key": "UiPathContactCenterStartJob.zip"
+                    "S3Bucket": "uipath-contactcenter",
+                    "S3Key": "AmazonConnect/IVR/UiPathContactCenterStartJob.zip"
                 },
                 "Handler": "startJob.handler",
                 "Runtime": "nodejs12.x",
@@ -577,8 +577,8 @@
             "Type": "AWS::Lambda::Function",
             "Properties": {
                 "Code": {
-                    "S3Bucket": "uipath-contact-center",
-                    "S3Key": "UiPathContactCenterQueryJob.zip"
+                    "S3Bucket": "uipath-contactcenter",
+                    "S3Key": "AmazonConnect/IVR/UiPathContactCenterQueryJob.zip"
                 },
                 "Handler": "queryJob.handler",
                 "Runtime": "nodejs12.x",
@@ -776,8 +776,8 @@
             "Type": "AWS::Lambda::Function",
             "Properties": {
                 "Code": {
-                    "S3Bucket": "uipath-contact-center",
-                    "S3Key": "UiPathContactCenterPackInputs.zip"
+                    "S3Bucket": "uipath-contactcenter",
+                    "S3Key": "AmazonConnect/IVR/UiPathContactCenterPackInputs.zip"
                 },
                 "Handler": "packInputs.handler",
                 "Runtime": "nodejs12.x",
@@ -881,8 +881,8 @@
             "Type": "AWS::Lambda::Function",
             "Properties": {
                 "Code": {
-                    "S3Bucket": "uipath-contact-center",
-                    "S3Key": "UiPathContactCenterCreateContactFlows.zip"
+                    "S3Bucket": "uipath-contactcenter",
+                    "S3Key": "AmazonConnect/IVR/UiPathContactCenterCreateContactFlows.zip"
                 },
                 "Handler": "createContactFlows.handler",
                 "Runtime": "nodejs12.x",
@@ -977,8 +977,8 @@
             "Type": "AWS::Lambda::Function",
             "Properties": {
                 "Code": {
-                    "S3Bucket": "uipath-contact-center",
-                    "S3Key": "UiPathContactCenterQueryRelease.zip"
+                    "S3Bucket": "uipath-contactcenter",
+                    "S3Key": "AmazonConnect/IVR/UiPathContactCenterQueryRelease.zip"
                 },
                 "Handler": "queryRelease.handler",
                 "Runtime": "nodejs12.x",
