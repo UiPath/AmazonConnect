@@ -1,5 +1,13 @@
 {
     "AWSTemplateFormatVersion": "2010-09-09",
+    "Mappings": {
+        "Configuration": {
+            "S3": {
+                "BucketPrefix": "uipath-contactcenter",
+                "LambdaKeysLocation": "AmazonConnect/IVR/"
+            }
+        }
+    },
     "Parameters": {
         "OrchestratorUrl": {
             "Type": "String",
@@ -491,8 +499,8 @@
             "Type": "AWS::Lambda::Function",
             "Properties": {
                 "Code": {
-                    "S3Bucket": "uipath-contactcenter",
-                    "S3Key": "AmazonConnect/IVR/UiPathContactCenterAuthenticate.zip"
+                    "S3Bucket": { "Fn::Join": [ "-", [ { "Fn::FindInMap": [ "Configuration", "S3", "BucketPrefix" ] }, { "Ref": "AWS::Region" } ] ] },
+                    "S3Key": { "Fn::Join": [ "", [ { "Fn::FindInMap": [ "Configuration", "S3", "LambdaKeysLocation" ] }, "UiPathContactCenterAuthenticate.zip" ] ] }
                 },
                 "Handler": "authenticate.handler",
                 "Runtime": "nodejs12.x",
@@ -534,8 +542,8 @@
             "Type": "AWS::Lambda::Function",
             "Properties": {
                 "Code": {
-                    "S3Bucket": "uipath-contactcenter",
-                    "S3Key": "AmazonConnect/IVR/UiPathContactCenterStartJob.zip"
+                    "S3Bucket": { "Fn::Join": [ "-", [ { "Fn::FindInMap": [ "Configuration", "S3", "BucketPrefix" ] }, { "Ref": "AWS::Region" } ] ] },
+                    "S3Key": { "Fn::Join": [ "", [ { "Fn::FindInMap": [ "Configuration", "S3", "LambdaKeysLocation" ] }, "UiPathContactCenterStartJob.zip" ] ] }
                 },
                 "Handler": "startJob.handler",
                 "Runtime": "nodejs12.x",
@@ -577,8 +585,8 @@
             "Type": "AWS::Lambda::Function",
             "Properties": {
                 "Code": {
-                    "S3Bucket": "uipath-contactcenter",
-                    "S3Key": "AmazonConnect/IVR/UiPathContactCenterQueryJob.zip"
+                    "S3Bucket": { "Fn::Join": [ "-", [ { "Fn::FindInMap": [ "Configuration", "S3", "BucketPrefix" ] }, { "Ref": "AWS::Region" } ] ] },
+                    "S3Key": { "Fn::Join": [ "", [ { "Fn::FindInMap": [ "Configuration", "S3", "LambdaKeysLocation" ] }, "UiPathContactCenterQueryJob.zip" ] ] }
                 },
                 "Handler": "queryJob.handler",
                 "Runtime": "nodejs12.x",
@@ -776,8 +784,8 @@
             "Type": "AWS::Lambda::Function",
             "Properties": {
                 "Code": {
-                    "S3Bucket": "uipath-contactcenter",
-                    "S3Key": "AmazonConnect/IVR/UiPathContactCenterPackInputs.zip"
+                    "S3Bucket": { "Fn::Join": [ "-", [ { "Fn::FindInMap": [ "Configuration", "S3", "BucketPrefix" ] }, { "Ref": "AWS::Region" } ] ] },
+                    "S3Key": { "Fn::Join": [ "", [ { "Fn::FindInMap": [ "Configuration", "S3", "LambdaKeysLocation" ] }, "UiPathContactCenterPackInputs.zip" ] ] }
                 },
                 "Handler": "packInputs.handler",
                 "Runtime": "nodejs12.x",
@@ -881,8 +889,8 @@
             "Type": "AWS::Lambda::Function",
             "Properties": {
                 "Code": {
-                    "S3Bucket": "uipath-contactcenter",
-                    "S3Key": "AmazonConnect/IVR/UiPathContactCenterCreateContactFlows.zip"
+                    "S3Bucket": { "Fn::Join": [ "-", [ { "Fn::FindInMap": [ "Configuration", "S3", "BucketPrefix" ] }, { "Ref": "AWS::Region" } ] ] },
+                    "S3Key": { "Fn::Join": [ "", [ { "Fn::FindInMap": [ "Configuration", "S3", "LambdaKeysLocation" ] }, "UiPathContactCenterCreateContactFlows.zip" ] ] }
                 },
                 "Handler": "createContactFlows.handler",
                 "Runtime": "nodejs12.x",
@@ -977,8 +985,8 @@
             "Type": "AWS::Lambda::Function",
             "Properties": {
                 "Code": {
-                    "S3Bucket": "uipath-contactcenter",
-                    "S3Key": "AmazonConnect/IVR/UiPathContactCenterQueryRelease.zip"
+                    "S3Bucket": { "Fn::Join": [ "-", [ { "Fn::FindInMap": [ "Configuration", "S3", "BucketPrefix" ] }, { "Ref": "AWS::Region" } ] ] },
+                    "S3Key": { "Fn::Join": [ "", [ { "Fn::FindInMap": [ "Configuration", "S3", "LambdaKeysLocation" ] }, "UiPathContactCenterQueryRelease.zip" ] ] }
                 },
                 "Handler": "queryRelease.handler",
                 "Runtime": "nodejs12.x",
