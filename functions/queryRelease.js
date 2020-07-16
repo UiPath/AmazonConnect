@@ -74,6 +74,8 @@ exports.handler = async (event, context, callback) => {
                 tenantName
             }
         });
+        await appInsightsClient.flush();
+
         throw err;
     }
 
@@ -93,6 +95,8 @@ exports.handler = async (event, context, callback) => {
             statusCode: release.statusCode,
         }
     });
+
+    await appInsightsClient.flush();
 
     return {
         releaseKey: release.data.value[0].Key

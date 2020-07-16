@@ -106,6 +106,7 @@ exports.handler = async (event, context, callback) => {
                 tenantName
             }
         });
+        await appInsightsClient.flush();
 
         throw err;
     }
@@ -126,6 +127,8 @@ exports.handler = async (event, context, callback) => {
             statusCode: job.statusCode,
         }
     });
+
+    await appInsightsClient.flush();
 
     return {
         jobKey: job.data.value[0].Id,

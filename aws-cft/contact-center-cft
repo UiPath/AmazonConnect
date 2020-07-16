@@ -907,6 +907,16 @@
                         "UiPathAllowS3WriteRole",
                         "Arn"
                     ]
+                },
+                "Environment": {
+                    "Variables": {
+                        "accountName": {
+                            "Ref": "OrchestratorAccountLogicalName"
+                        },
+                        "tenantName": {
+                            "Ref": "OrchestratorTenantLogicalName"
+                        }
+                    }
                 }
             },
             "Metadata": {

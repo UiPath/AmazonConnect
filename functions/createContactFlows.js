@@ -3,6 +3,8 @@ const aws = require("aws-sdk");
 const https = require("https");
 const url = require("url");
 const path = require('path');
+const initAppInsights = require('./appInsights.js');
+const { SOURCE } = require('./constants.js');
 
 function createContactFlow(properties, contactFlow) {
     var contactFlowBody = JSON.stringify(require(contactFlow));
@@ -30,7 +32,9 @@ function createContactFlow(properties, contactFlow) {
     });
 }
 
-createContactFlow.handler = function (event, context) {
+createContactFlow.handler = async function (event, context) {
+    const appInsightsClient = initAppInsights();
+
     if (event.RequestType == 'Delete') {
         return sendResponse(event, context, "SUCCESS");
     }
@@ -40,10 +44,23 @@ createContactFlow.handler = function (event, context) {
         'UiPath Outbound Example.json',
     ];
 
+
     try {
         contactFlows.forEach(contactFlow => {
             createContactFlow(event.ResourceProperties, contactFlow);
         });
+
+        appInsightsClient.trackEvent({
+            name: 'ContactFlowsCreated',
+            properties: {
+                source: SOURCE,
+                accountName: process.env.accountName,
+                tenantName: process.env.tenantName,
+            }
+        });
+    
+        await appInsightsClient.flush();
+
         return sendResponse(event, context, 'SUCCESS');
     } catch (err) {
         return sendResponse(event, context, 'FAILED', err);
