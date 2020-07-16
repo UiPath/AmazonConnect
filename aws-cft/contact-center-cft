@@ -525,6 +525,12 @@
                         },
                         "access_token_secret_id": {
                             "Ref": "UiPathAccessToken"
+                        },
+                        "accountName": {
+                            "Ref": "OrchestratorAccountLogicalName"
+                        },
+                        "tenantName": {
+                            "Ref": "OrchestratorTenantLogicalName"
                         }
                     }
                 }

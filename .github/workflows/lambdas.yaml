@@ -35,7 +35,7 @@ jobs:
 
     - name: Build Authenticate
       working-directory: ./functions
-      run: zip -qq -r ./UiPathContactCenterAuthenticate.zip ./authenticate.js ./appInsights.js ./secretManager.js ./node_modules
+      run: zip -qq -r ./UiPathContactCenterAuthenticate.zip ./constants.js ./authenticate.js ./appInsights.js ./secretManager.js ./node_modules
 
     - name: Build CreateContactFlows
       working-directory: ./functions

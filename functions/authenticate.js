@@ -6,6 +6,8 @@
 const url = require('url');
 const https = require('https')
 const { getSecret, updateSecret } = require('./secretManager.js');
+const { SOURCE } = require('./constants.js');
+const initAppInsights = require('./appInsights.js');
 
 function getReason(err) {
 	if (err)
@@ -101,6 +103,8 @@ async function getNewAccessToken(authUrl, client_id, user_key) {
 exports.handler = async (event, context) => {
 	let client_id;
 	let user_key;
+	let lambdaName = process.env.AWS_LAMBDA_FUNCTION_NAME;
+    const appInsightsClient = initAppInsights();
 
 	try {
 		client_id = await getSecret(process.env.api_access_key_client_id_secret_id);
@@ -113,13 +117,25 @@ exports.handler = async (event, context) => {
 	try {
 		const access_token = await getNewAccessToken(process.env.api_access_auth_url, client_id, user_key);
 		await updateSecret(process.env.access_token_secret_id, access_token);
+
+		appInsightsClient.trackEvent({
+			name: 'Authenticate',
+			properties: {
+				source: SOURCE,
+                accountName: process.env.accountName,
+                tenantName: process.env.tenantName,
+			}
+		});
+
 		await sendResponse(event, context, 'SUCCESS');
 	} catch (err) {
 		await sendResponse(event, context, 'FAILED', err);
 		appInsightsClient.trackException({
 			exception: err, measurements: {
-				accountName,
-				tenantName
+				source: SOURCE,
+				lambdaName,
+                accountName: process.env.accountName,
+                tenantName: process.env.tenantName,
 			}
 		});
 		throw err;
