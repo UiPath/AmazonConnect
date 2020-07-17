@@ -61,7 +61,7 @@ createContactFlow.handler = async function (event, context) {
     
         await appInsightsClient.flush();
 
-        return sendResponse(event, context, 'SUCCESS');
+        return await sendResponse(event, context, 'SUCCESS');
     } catch (err) {
         return sendResponse(event, context, 'FAILED', err);
     }
@@ -90,7 +90,6 @@ function sendResponse(event, context, status, err) {
         Reason: getReason(err) + " See details in CloudWatch Log: " + context.logStreamName,
     };
 
-    console.log("RESPONSE:\n", responseBody);
     var json = JSON.stringify(responseBody);
     var parsedUrl = url.parse(event.ResponseURL);
     var options = {
@@ -104,23 +103,28 @@ function sendResponse(event, context, status, err) {
         }
     };
 
-    var request = https.request(options, function (response) {
-        console.log("STATUS: " + response.statusCode);
-        console.log("HEADERS: " + JSON.stringify(response.headers));
-        context.done(null, null);
-    });
+    return new Promise(function(resolve, reject) {
+        var request = https.request(options, function (response) {
+            if (response.statusCode < 200 || response.statusCode >= 300) {
+                return reject(new Error('statusCode=' + response.statusCode));
+            }
+            
+            console.log("STATUS: " + response.statusCode);
+            console.log("HEADERS: " + JSON.stringify(response.headers));
+            
+            response.on("end", function () {
+                resolve({});
+            });
+        });
 
-    request.on("error", function (error) {
-        console.log("sendResponse Error:\n", error);
-        context.done(error);
-    });
-
-    request.on("end", function () {
-        console.log("end");
-    });
-
-    request.write(json);
-    request.end();
+        request.on("error", function (error) {
+            console.log("sendResponse Error:\n", error);
+            reject(error);
+        });
+    
+        request.write(json);
+        request.end();
+    })
 }
 
 module.exports = createContactFlow;
