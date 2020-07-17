@@ -86,6 +86,8 @@ exports.handler = async (event, context, callback) => {
                 tenantName
             }
         });
+        await appInsightsClient.flush();
+
         throw err;
     }
 
@@ -105,6 +107,8 @@ exports.handler = async (event, context, callback) => {
             statusCode: queryJob.statusCode,
         }
     });
+
+    await appInsightsClient.flush();
 
     let output = {
         State: queryJob.data.State,

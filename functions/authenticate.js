@@ -127,6 +127,7 @@ exports.handler = async (event, context) => {
 			}
 		});
 
+		await appInsightsClient.flush();
 		await sendResponse(event, context, 'SUCCESS');
 	} catch (err) {
 		await sendResponse(event, context, 'FAILED', err);
@@ -138,6 +139,8 @@ exports.handler = async (event, context) => {
                 tenantName: process.env.tenantName,
 			}
 		});
+		await appInsightsClient.flush();
+		
 		throw err;
 	}
 };
