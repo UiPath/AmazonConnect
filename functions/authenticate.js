@@ -84,8 +84,10 @@ async function getNewAccessToken(authUrl, client_id, user_key) {
 	return new Promise((resolve, reject) => {
 		let apiAccessAuthReq = https.request(apiAccessAuthOptions, function (res) {
 			res.setEncoding('utf8');
-			res.on('data', function (res) {
-				let tokensObj = JSON.parse(res);
+			let body = '';
+			res.on('data', (chunk) => body += chunk);
+			res.on('end', function () {
+				let tokensObj = JSON.parse(body);
 				if (!tokensObj.access_token) {
 					throw 'access_token not found';
 				}
